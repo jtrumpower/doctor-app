@@ -35,4 +35,9 @@ public class CsvHelper {
       log.error("Failed to write entry to stream: {}", entry);
     }
   }
+
+  public <T> T readFromString(String line) {
+    CsvMapper m = new CsvMapper();
+    CsvSchema schema = m.schemaFor(FooBar.class).withoutHeader().withLineSeparator("\n").withColumnSeparator(',');
+  }
 }

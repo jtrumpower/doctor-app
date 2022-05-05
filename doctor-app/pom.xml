@@ -18,6 +18,8 @@
     <java.version>17</java.version>
     <testcontainers.version>1.16.2</testcontainers.version>
     <jackson-csv.verison>2.13.2</jackson-csv.verison>
+    <cxf.version>3.0.15</cxf.version>
+    <jackson-json-provider.version>2.12.4</jackson-json-provider.version>
   </properties>
   <dependencies>
     <dependency>
@@ -27,6 +29,22 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <dependency>
+      <artifactId>cxf-rt-rs-client</artifactId>
+      <groupId>org.apache.cxf</groupId>
+      <version>${cxf.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>jackson-jaxrs-json-provider</artifactId>
+      <groupId>com.fasterxml.jackson.jaxrs</groupId>
+      <version>${jackson-json-provider.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-csv</artifactId>
+      <version>${jackson-csv.verison}</version>
     </dependency>
 
     <dependency>
@@ -50,11 +68,7 @@
       <artifactId>lombok</artifactId>
       <optional>true</optional>
     </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.dataformat</groupId>
-      <artifactId>jackson-dataformat-csv</artifactId>
-      <version>${jackson-csv.verison}</version>
-    </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
