@@ -103,7 +103,7 @@
     </dependencies>
   </dependencyManagement>
 
-  <build>
+  <!--<build>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
@@ -118,6 +118,33 @@
         </configuration>
       </plugin>
     </plugins>
+  </build>-->
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <annotationProcessorPaths>
+              <path>
+                <artifactId>lombok</artifactId>
+                <groupId>org.projectlombok</groupId>
+                <version>${lombok.version}</version>
+              </path>
+              <path>
+                <artifactId>mapstruct-processor</artifactId>
+                <groupId>org.mapstruct</groupId>
+                <version>${mapstruct.version}</version>
+              </path>
+            </annotationProcessorPaths>
+            <source>11</source>
+            <target>11</target>
+          </configuration>
+          <groupId>org.apache.maven.plugins</groupId>
+          <version>${maven-compiler-plugin.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 
 </project>

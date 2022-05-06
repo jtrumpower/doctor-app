@@ -8,6 +8,7 @@ import com.josiah.doctorapp.config.properties.CmsProperties;
 import com.josiah.doctorapp.data.entity.GeneralEntity;
 import com.josiah.doctorapp.data.repository.GeneralRepository;
 import com.josiah.doctorapp.helper.CsvHelper;
+import com.josiah.doctorapp.service.mapper.GeneralRowMapper;
 import com.josiah.doctorapp.service.model.GeneralRow;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -19,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -29,18 +31,20 @@ public class DataService {
   private final DatastoreApi datastoreApi;
   private final CsvHelper csvHelper;
   private final CmsProperties properties;
+  private final GeneralRowMapper mapper;
 
   public void loadData() {
     InputStream stream = datastoreApi.queryDataById(
         DatastoreRequest.builder()
             .id(properties.getDatastoreId())
             .format("csv")
-            .limit(20L)
+            .limit(500L)
             .build());
 
     store(stream);
   }
 
+  @Transactional
   public void store(InputStream stream) {
     try (InputStreamReader sReader = new InputStreamReader(stream, StandardCharsets.UTF_8);
         BufferedReader buffer = new BufferedReader(sReader)) {
@@ -48,9 +52,8 @@ public class DataService {
 
       while ((line = buffer.readLine()) != null) {
         GeneralRow generalEntity = csvHelper.readFromString(line, GeneralRow.class);
-        log.info(generalEntity.toString());
+        repository.save(mapper.mapGeneralRowToEntity(generalEntity));
       }
-      buffer.lines().forEach(log::info);
     } catch (IOException e) {
       e.printStackTrace();
     }

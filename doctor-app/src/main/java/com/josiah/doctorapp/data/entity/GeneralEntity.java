@@ -21,19 +21,19 @@ import lombok.NoArgsConstructor;
 public class GeneralEntity {
   @Id
   @Column(name = "record_number")
-  private int recordNumber;
+  private long recordNumber;
   @Column(name = "change_type")
   private String changeType;
   @Column(name = "covered_recipient_type")
   private String coveredRecipientType;
   @Column(name = "teaching_hospital_ccn")
-  private int teachingHospitalCCN;
+  private String teachingHospitalCCN;
   @Column(name = "teaching_hospital_id")
-  private int teachingHospitalId;
+  private String teachingHospitalId;
   @Column(name = "teaching_hospital_name")
   private String teachingHospitalName;
   @Column(name = "physician_profile_id")
-  private int physicianProfileId;
+  private String physicianProfileId;
   @Column(name = "physician_first_name")
   private String physicianFirstName;
   @Column(name = "physician_middle_name")
@@ -85,7 +85,7 @@ public class GeneralEntity {
   @Column(name = "total_amount_of_payment_usdollars")
   private double totalAmountOfPaymentUsDollars;
   @Column(name = "date_of_payment")
-  private Date dateOfPayment;
+  private String dateOfPayment;
   @Column(name = "number_of_payments_included_in_total_amount")
   private int numberOfPaymentsInTotalAmount;
   @Column(name = "form_of_payment_or_transfer_of_value")
@@ -151,5 +151,5 @@ public class GeneralEntity {
   @Column(name = "program_year")
   private String programYear;
   @Column(name = "payment_publication_date")
-  private Date paymentPublicationDate;
+  private String paymentPublicationDate;
 }

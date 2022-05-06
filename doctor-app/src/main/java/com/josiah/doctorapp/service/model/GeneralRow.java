@@ -2,7 +2,6 @@ package com.josiah.doctorapp.service.model;
 
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -81,13 +80,13 @@ import lombok.NoArgsConstructor;
     "paymentPublicationDate"
 })
 public class GeneralRow {
-  private String recordNumber;
+  private long recordNumber;
   private String changeType;
   private String coveredRecipientType;
-  private int teachingHospitalCCN;
-  private int teachingHospitalId;
+  private String teachingHospitalCCN;
+  private String teachingHospitalId;
   private String teachingHospitalName;
-  private int physicianProfileId;
+  private String physicianProfileId;
   private String physicianFirstName;
   private String physicianMiddleName;
   private String physicianLastName;
@@ -108,7 +107,7 @@ public class GeneralRow {
   private String physicianLicenseStateCode4;
   private String physicianLicenseStateCode5;
   private String submittingApplicableManufacturerOrGpoName;
-  private long applicableManufacturerOrGpoPaymentId;
+  private String applicableManufacturerOrGpoPaymentId;
   private String applicableManufacturerOrGpoPaymentName;
   private String applicableManufacturerOrGpoPaymentState;
   private String applicableManufacturerOrGpoPaymentCountry;
