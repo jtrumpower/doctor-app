@@ -12,4 +12,5 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 public class CmsProperties {
   String api;
   String datastoreId;
+  String metastoreId;
 }

@@ -9,6 +9,6 @@ import javax.ws.rs.Path;
 @Path("/datastore/query")
 public interface DatastoreApi {
   @GET
-  @Path("{id}")
+  @Path("{id}/download")
   InputStream queryDataById(@BeanParam DatastoreRequest request);
 }

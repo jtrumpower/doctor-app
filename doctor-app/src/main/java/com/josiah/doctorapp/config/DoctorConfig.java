@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.josiah.doctorapp.api.DatastoreApi;
+import com.josiah.doctorapp.api.MetastoreApi;
 import com.josiah.doctorapp.config.properties.CmsProperties;
 import java.util.Arrays;
 import java.util.List;
@@ -30,5 +31,10 @@ public class DoctorConfig {
   @Bean
   public DatastoreApi datastoreApi(CmsProperties cmsProperties, JacksonJaxbJsonProvider jsonProvider) {
     return JAXRSClientFactory.create(cmsProperties.getApi(), DatastoreApi.class, List.of(jsonProvider));
+  }
+
+  @Bean
+  public MetastoreApi metastoreApiApi(CmsProperties cmsProperties, JacksonJaxbJsonProvider jsonProvider) {
+    return JAXRSClientFactory.create(cmsProperties.getApi(), MetastoreApi.class, List.of(jsonProvider));
   }
 }

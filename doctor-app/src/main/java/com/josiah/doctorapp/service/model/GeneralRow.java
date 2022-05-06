@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonPropertyOrder({
-    "recordNumber",
     "changeType",
     "coveredRecipientType",
     "teachingHospitalCCN",
@@ -80,7 +79,6 @@ import lombok.NoArgsConstructor;
     "paymentPublicationDate"
 })
 public class GeneralRow {
-  private long recordNumber;
   private String changeType;
   private String coveredRecipientType;
   private String teachingHospitalCCN;

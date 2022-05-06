@@ -17,7 +17,10 @@ public class DownloadController {
 
   private final DownloadService downloadService;
 
-  @GetMapping("/all")
+  @GetMapping(
+      value = "/all",
+      produces = "application/octet-stream"
+  )
   public ResponseEntity<StreamingResponseBody> getAllData() {
     StreamingResponseBody stream = downloadService::getAllData;
 

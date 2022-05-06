@@ -8,4 +8,5 @@ import org.mapstruct.Mapper;
 public interface GeneralRowMapper {
 
   GeneralEntity mapGeneralRowToEntity(GeneralRow generalRow);
+  GeneralRow mapGeneralRowToEntity(GeneralEntity generalEntity);
 }
