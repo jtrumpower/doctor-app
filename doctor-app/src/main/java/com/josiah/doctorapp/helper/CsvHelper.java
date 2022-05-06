@@ -1,8 +1,11 @@
 package com.josiah.doctorapp.helper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import com.josiah.doctorapp.data.entity.GeneralEntity;
 import java.io.IOException;
 import java.io.OutputStream;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +39,15 @@ public class CsvHelper {
     }
   }
 
-  public <T> T readFromString(String line) {
+  public <T> T readFromString(String line, Class<T> clazz) throws JsonProcessingException {
     CsvMapper m = new CsvMapper();
-    CsvSchema schema = m.schemaFor(FooBar.class).withoutHeader().withLineSeparator("\n").withColumnSeparator(',');
+    CsvSchema schema = m.schemaFor(clazz)
+        .withoutHeader()
+        .withLineSeparator("\n")
+        .withColumnSeparator(',');
+
+    return m.readerFor(clazz)
+        .with(schema)
+        .readValue(line);
   }
 }

@@ -43,6 +43,7 @@ public class DatastoreRequest {
   @QueryParam("format")
   String format;
 
+  @Default
   @QueryParam("rowIds")
-  boolean rowIds;
+  boolean rowIds = true;
 }

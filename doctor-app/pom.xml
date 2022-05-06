@@ -15,11 +15,12 @@
   <name>doctor-app</name>
   <description>doctor-app</description>
   <properties>
-    <java.version>17</java.version>
+    <java.version>11</java.version>
     <testcontainers.version>1.16.2</testcontainers.version>
     <jackson-csv.verison>2.13.2</jackson-csv.verison>
     <cxf.version>3.0.15</cxf.version>
     <jackson-json-provider.version>2.12.4</jackson-json-provider.version>
+    <mapstruct.version>1.4.2.Final</mapstruct.version>
   </properties>
   <dependencies>
     <dependency>
@@ -45,6 +46,11 @@
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-csv</artifactId>
       <version>${jackson-csv.verison}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct</artifactId>
+      <version>${mapstruct.version}</version>
     </dependency>
 
     <dependency>

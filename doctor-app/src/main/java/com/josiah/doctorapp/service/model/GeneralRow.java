@@ -1,5 +1,6 @@
 package com.josiah.doctorapp.service.model;
 
+
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.Date;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,72 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonPropertyOrder({
-
+    "recordNumber",
+    "changeType",
+    "coveredRecipientType",
+    "teachingHospitalCCN",
+    "teachingHospitalId",
+    "teachingHospitalName",
+    "physicianProfileId",
+    "physicianFirstName",
+    "physicianMiddleName",
+    "physicianLastName",
+    "physicianNameSuffix",
+    "recipientPrimaryBusinessStreet1",
+    "recipientPrimaryBusinessStreet2",
+    "recipientCity",
+    "recipientState",
+    "recipientZipCode",
+    "recipientCountry",
+    "recipientProvince",
+    "recipientPostalCode",
+    "physicianPrimaryType",
+    "physicianSpecialty",
+    "physicianLicenseStateCode1",
+    "physicianLicenseStateCode2",
+    "physicianLicenseStateCode3",
+    "physicianLicenseStateCode4",
+    "physicianLicenseStateCode5",
+    "submittingApplicableManufacturerOrGpoName",
+    "applicableManufacturerOrGpoPaymentId",
+    "applicableManufacturerOrGpoPaymentName",
+    "applicableManufacturerOrGpoPaymentState",
+    "applicableManufacturerOrGpoPaymentCountry",
+    "totalAmountOfPaymentUsDollars",
+    "dateOfPayment",
+    "numberOfPaymentsInTotalAmount",
+    "formOfPaymentOrTransferOfValue",
+    "natureOfPaymentOrTransferOfValue",
+    "cityOfTravel",
+    "stateOfTravel",
+    "countryOfTravel",
+    "physicianOwnershipIndicator",
+    "thirdPartyPaymentRecipientIndicator",
+    "nameOfEntityReceivingPaymentOrTransferOfValue",
+    "charityIndicator",
+    "thirdPartyEqualsCoveredRecipientIndicator",
+    "contextualInformation",
+    "delayInPublicationIndicator",
+    "recordId",
+    "disputeStatusForPublication",
+    "productIndicator",
+    "nameOfAssociatedCoveredDrugOrBiological1",
+    "nameOfAssociatedCoveredDrugOrBiological2",
+    "nameOfAssociatedCoveredDrugOrBiological3",
+    "nameOfAssociatedCoveredDrugOrBiological4",
+    "nameOfAssociatedCoveredDrugOrBiological5",
+    "ndcOfAssociatedCoveredDrugOrBiological1",
+    "ndcOfAssociatedCoveredDrugOrBiological2",
+    "ndcOfAssociatedCoveredDrugOrBiological3",
+    "ndcOfAssociatedCoveredDrugOrBiological4",
+    "ndcOfAssociatedCoveredDrugOrBiological5",
+    "nameOfAssociatedCoveredDeviceOrMedicalSupply1",
+    "nameOfAssociatedCoveredDeviceOrMedicalSupply2",
+    "nameOfAssociatedCoveredDeviceOrMedicalSupply3",
+    "nameOfAssociatedCoveredDeviceOrMedicalSupply4",
+    "nameOfAssociatedCoveredDeviceOrMedicalSupply5",
+    "programYear",
+    "paymentPublicationDate"
 })
 public class GeneralRow {
   private String recordNumber;
@@ -47,7 +113,7 @@ public class GeneralRow {
   private String applicableManufacturerOrGpoPaymentState;
   private String applicableManufacturerOrGpoPaymentCountry;
   private double totalAmountOfPaymentUsDollars;
-  private Date dateOfPayment;
+  private String dateOfPayment;
   private int numberOfPaymentsInTotalAmount;
   private String formOfPaymentOrTransferOfValue;
   private String natureOfPaymentOrTransferOfValue;
@@ -80,5 +146,5 @@ public class GeneralRow {
   private String nameOfAssociatedCoveredDeviceOrMedicalSupply4;
   private String nameOfAssociatedCoveredDeviceOrMedicalSupply5;
   private String programYear;
-  private Date paymentPublicationDate;
+  private String paymentPublicationDate;
 }
