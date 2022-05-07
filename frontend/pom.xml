@@ -5,38 +5,84 @@
   <parent>
     <artifactId>doctor_uber</artifactId>
     <groupId>com.josiah</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-
+  <packaging>pom</packaging>
   <artifactId>frontend</artifactId>
 
   <properties>
     <node-plugin.version>1.12.1</node-plugin.version>
-    <node.version>16.15.0</node.version>
+    <node.version>v17.9.0</node.version>
+    <maven-resource-plugin.version>3.0.2</maven-resource-plugin.version>
   </properties>
 
   <build>
-    <!--<plugins>
+    <plugins>
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
         <version>${node-plugin.version}</version>
         <executions>
           <execution>
-            &lt;!&ndash; optional: you don't really need execution ids, but it looks nice in your build log. &ndash;&gt;
+            <!-- optional: you don't really need execution ids, but it looks nice in your build log. -->
             <id>install node</id>
             <goals>
               <goal>install-node-and-npm</goal>
             </goals>
-            &lt;!&ndash; optional: default phase is "generate-resources" &ndash;&gt;
+            <!-- optional: default phase is "generate-resources" -->
             <phase>generate-resources</phase>
+          </execution>
+          <execution>
+            <id>npm install</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+
+            <!-- optional: default phase is "generate-resources" -->
+            <phase>generate-resources</phase>
+
+            <configuration>
+              <arguments>install</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm build</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <phase>prepare-package</phase>
+            <configuration>
+              <arguments>run build</arguments>
+            </configuration>
           </execution>
         </executions>
         <configuration>
           <nodeVersion>${node.version}</nodeVersion>
         </configuration>
       </plugin>
-    </plugins>-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven-resource-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>copy-resource-one</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/../doctor-app/src/main/resources/static</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${basedir}/build</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 </project>
