@@ -1,25 +1,19 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import AppAppBar from './modules/views/AppAppBar';
+import withRoot from './modules/withRoot';
+import SearchPage from './modules/views/SearchPage';
+import {Container} from '@mui/material';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <React.Fragment>
+        <AppAppBar />
+        <Container maxWidth="lg">
+          <SearchPage />
+        </Container>
+      </React.Fragment>
   );
 }
 
-export default App;
+export default withRoot(App);
