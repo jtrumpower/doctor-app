@@ -19,7 +19,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "general_data",
     indexes = {
-        @Index(name = "record_number_index", columnList = "record_number", unique = true)
+        @Index(name = "record_number_idx", columnList = "record_number", unique = true),
+        @Index(name = "change_type_idx", columnList = "change_type"),
+        @Index(name = "nature_idx", columnList = "nature_of_payment_or_transfer_of_value"),
+        @Index(name = "first_name_idx", columnList = "physician_first_name"),
+        @Index(name = "last_name_idx", columnList = "physician_last_name"),
+        @Index(name = "primary_type_idx", columnList = "physician_primary_type"),
     })
 public class GeneralEntity {
   @Id

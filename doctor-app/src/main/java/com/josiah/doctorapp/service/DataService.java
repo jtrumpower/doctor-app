@@ -50,6 +50,7 @@ public class DataService {
 
   private final DownloadHelper downloadHelper;
   private final MetastoreApi metastoreApi;
+  private final FileHelper fileHelper;
   private final CmsProperties properties;
   private final DataSource dataSource;
 
@@ -64,6 +65,8 @@ public class DataService {
 
     try {
       InputStream stream = downloadHelper.streamFile(downloadUrl);
+      //fileHelper.writeFile(stream, "./data.csv");
+      fileHelper.getFileInputStream("./data.csv");
 
       process(stream);
     } catch (IOException | SQLException e) {
@@ -91,7 +94,7 @@ public class DataService {
     long lines = 0;
     String[] data;
     try (PreparedStatement statement = getStatement(conn, headers)) {
-      while ((data = reader.readNext()) != null) {
+      while ((data = reader.readNext()) != null && lines < 200) {
         try {
           for (int i = 1; i <= data.length; i++) {
             statement.setObject(i, data[i - 1]);
