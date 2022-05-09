@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {search} from '../api/SearchApi';
 
 const DEFAULTS = {
-  pageSize: 10,
+  pageSize: 25,
   page: 0,
   sort: 'Change Type'
 }
@@ -17,9 +17,9 @@ const useDataEvents = () => {
 
   const onSearch = (val='', page=DEFAULTS.page, pageSize=DEFAULTS.pageSize, sort=DEFAULTS.sort) => {
     setSearchVal(val);
-    setPage(page);
     setPageSize(pageSize);
     setSort(sort);
+    val !== searchVal ? setPage(0) : setPage(page);
     search({ name: val, pageSize, page }).then(json => {
       setResults(json.results);
       setRowCount(json.totalResults);

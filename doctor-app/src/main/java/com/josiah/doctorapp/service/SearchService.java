@@ -19,11 +19,11 @@ public class SearchService {
   private final GeneralRepository repository;
   private final GeneralRowMapper mapper;
 
-  public SearchResponse search(String name, int pageSize) {
+  public SearchResponse search(SearchRequest params) {
     Page<GeneralEntity> pageResults = repository.findByPhysicianFirstNameLikeOrPhysicianLastNameLike(
-        name,
-        name,
-        PageRequest.of(0, pageSize));
+        params.getName(),
+        params.getName(),
+        PageRequest.of(params.getPage(), params.getPageSize()));
 
     return SearchResponse.builder()
         .totalPages(pageResults.getTotalPages())

@@ -1,12 +1,10 @@
 import React, {useState} from 'react';
 import {
   Button,
-  Grid,
   Input,
   Stack, Typography,
 } from '@mui/material';
 import AppDataGrid from '../components/AppDataGrid';
-import {search} from '../api/SearchApi';
 import useDataEvents from '../hooks/useDataEvents';
 
 const SearchPage = () => {
