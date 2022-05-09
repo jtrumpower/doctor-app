@@ -3,41 +3,36 @@ import {
   Button,
   Grid,
   Input,
-  Stack,
+  Stack, Typography,
 } from '@mui/material';
 import AppDataGrid from '../components/AppDataGrid';
 import {search} from '../api/SearchApi';
+import useDataEvents from '../hooks/useDataEvents';
 
 const SearchPage = () => {
   const [name, setName] = useState('');
-  const [results, setResults] = useState([]);
+  const data = useDataEvents();
 
   const handleChange = (e) => setName(e.target.value)
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    search({ name: name, pageSize: 25 }).then(json => {
-      setResults(json.results);
-    }).catch(error => {
-
-    })
+    data.onSearch(name);
   }
 
   return (
-      <Stack component="form" marginTop={3} onSubmit={handleSubmit}>
-        <Grid container alignItems="flex-end" spacing={3}>
-          <Grid item>
-            Enter the name of a doctor:
-          </Grid>
-          <Grid item>
+      <Stack marginTop={3}>
+        <form onSubmit={handleSubmit}>
+          <Stack direction="row" alignItems="flex-end" spacing={1}>
+            <Typography>
+              Enter the name of a doctor:
+            </Typography>
             <Input id="Name" type="text" sx={{ width: 200 }} value={name} required onChange={handleChange} />
-          </Grid>
-          <Grid item>
             <Button type="submit" variant="outlined">Search</Button>
-          </Grid>
-        </Grid>
-        <AppDataGrid results={results} />
+          </Stack>
+        </form>
+        <AppDataGrid {...data} />
       </Stack>
   )
 }

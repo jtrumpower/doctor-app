@@ -3,21 +3,45 @@ import {DataGrid} from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 import {DataGridColumnDefinition} from './model/DataGridColumnDefinition';
 
-const AppDataGrid = ({ results }) => {
+const AppDataGrid = ({ results, page, pageSize, rowCount, onSortChange, onPageChange, onPageSizeChange }) => {
   const [rows, setRows] = useState([]);
+  const [rowCountState, setRowCountState] = React.useState(rowCount);
 
   React.useEffect(() => {
-    const vals = results.map((result, index) => ({
-      id: index,
-      ...Object.getOwnPropertyNames(result)
-          .map(prop => ({ [`col${index + 1}`]: result[prop] }))
-    }));
+    const vals = results.map((result, index) => {
+      const val = { id: index }
+
+      Object.getOwnPropertyNames(result)
+          .forEach((prop, i) => val[`col${i + 1}`] =  result[prop]);
+
+      return val;
+    });
     setRows(vals);
-  }, results)
+  }, [results]);
+
+  React.useEffect(() => {
+    setRowCountState((prevRowCountState) =>
+        rowCount !== undefined ? rowCount : prevRowCountState,
+    );
+  }, [rowCount, setRowCountState]);
 
   return (
       <Box height={700} marginTop={3}>
-        <DataGrid columns={DataGridColumnDefinition} rows={rows} />
+        <DataGrid
+            rowCount={rowCountState}
+            page={page}
+            pageSize={pageSize}
+            disableColumnResize={false}
+            disableColumnMenu={true}
+            disableColumnSelector={true}
+            hideFooterSelectedRowCount={true}
+            columns={DataGridColumnDefinition}
+            sortingMode="server"
+            paginationMode="server"
+            onSortModelChange={onSortChange}
+            onPageChange={onPageChange}
+            onPageSizeChange={onPageSizeChange}
+            rows={rows} />
       </Box>
   )
 }
