@@ -4,23 +4,23 @@ import {search} from '../api/SearchApi';
 const DEFAULTS = {
   pageSize: 25,
   page: 0,
-  sort: 'Change Type'
+  sorting: []
 }
 
 const useDataEvents = () => {
   const [searchVal, setSearchVal] = useState('')
   const [pageSize, setPageSize] = useState(DEFAULTS.pageSize);
   const [page, setPage] = useState(DEFAULTS.page);
-  const [sort, setSort] = useState(DEFAULTS.sort)
+  const [sorting, setSorting] = useState(DEFAULTS.sort)
   const [results, setResults] = useState([]);
   const [rowCount, setRowCount] = useState(0);
 
-  const onSearch = (val, page=DEFAULTS.page, pageSize=DEFAULTS.pageSize, sort=DEFAULTS.sort) => {
+  const onSearch = (val, page=DEFAULTS.page, pageSize=DEFAULTS.pageSize, sorting=DEFAULTS.sorting) => {
     setSearchVal(val);
     setPageSize(pageSize);
-    setSort(sort);
+    setSorting(sorting);
     val !== searchVal ? setPage(0) : setPage(page);
-    search({ name: val.name, pageSize, page }).then(json => {
+    search({ name: val.name, pageSize, page, sorting }).then(json => {
       setResults(json.results);
       setRowCount(json.totalResults);
     }).catch(error => {
@@ -30,19 +30,18 @@ const useDataEvents = () => {
 
 
   const onPageChange = (pageNum) => {
-    onSearch(searchVal, pageNum, pageSize, sort);
+    onSearch(searchVal, pageNum, pageSize, sorting);
   }
 
   const onPageSizeChange = (pageSize) => {
-    onSearch(searchVal, page, pageSize, sort);
+    onSearch(searchVal, page, pageSize, sorting);
   }
 
-  const onSortChange = (sort) => {
-    console.log(sort);
-    onSearch(searchVal, 0, pageSize, sort);
+  const onSortChange = (sorting) => {
+    onSearch(searchVal, 0, pageSize, sorting);
   }
 
-  return {...{results, page, pageSize, sort, rowCount, onSearch, onPageChange, onPageSizeChange, onSortChange}}
+  return {...{results, page, pageSize, sorting, rowCount, onSearch, onPageChange, onPageSizeChange, onSortChange}}
 }
 
 export default useDataEvents;
