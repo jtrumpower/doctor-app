@@ -12,7 +12,7 @@ const AppDataGrid = ({ results, page, pageSize, rowCount, onSortChange, onPageCh
       const val = { id: index }
 
       Object.getOwnPropertyNames(result)
-          .forEach((prop, i) => val[`col${i + 1}`] =  result[prop]);
+          .forEach((prop) => val[prop] = result[prop]);
 
       return val;
     });

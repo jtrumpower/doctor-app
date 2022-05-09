@@ -27,6 +27,8 @@ public class DoctorConfig {
     return provider;
   }
 
+
+
   @Bean
   public DatastoreApi datastoreApi(CmsProperties cmsProperties, JacksonJaxbJsonProvider jsonProvider) {
     return JAXRSClientFactory.create(cmsProperties.getApi(), DatastoreApi.class, List.of(jsonProvider));

@@ -1,23 +1,13 @@
 package com.josiah.doctorapp.service;
 
-import com.josiah.doctorapp.api.DatastoreApi;
 import com.josiah.doctorapp.api.MetastoreApi;
-import com.josiah.doctorapp.api.model.request.DatastoreRequest;
 import com.josiah.doctorapp.api.model.request.MetastoreRequest;
 import com.josiah.doctorapp.api.model.response.MetastoreResponse;
 import com.josiah.doctorapp.config.properties.CmsProperties;
-import com.josiah.doctorapp.data.entity.GeneralEntity;
-import com.josiah.doctorapp.data.repository.GeneralRepository;
-import com.josiah.doctorapp.helper.CsvHelper;
 import com.josiah.doctorapp.helper.DownloadHelper;
 import com.josiah.doctorapp.helper.FileHelper;
-import com.josiah.doctorapp.service.mapper.GeneralRowMapper;
-import com.josiah.doctorapp.service.model.GeneralRow;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -92,7 +82,7 @@ public class DataService {
     long lines = 0;
     String[] data;
     try (PreparedStatement statement = getStatement(conn, headers)) {
-      while ((data = reader.readNext()) != null && lines < 200) {
+      while ((data = reader.readNext()) != null && lines < 5000) {
         try {
           for (int i = 1; i <= data.length; i++) {
             statement.setObject(i, data[i - 1]);

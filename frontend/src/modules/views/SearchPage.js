@@ -1,35 +1,34 @@
 import React, {useState} from 'react';
-import {
-  Button,
-  Input,
-  Stack, Typography,
-} from '@mui/material';
+import {Stack} from '@mui/material';
 import AppDataGrid from '../components/AppDataGrid';
 import useDataEvents from '../hooks/useDataEvents';
+import SearchForm from '../forms/SearchForm';
+import {SEARCH_TYPE_DEFAULT} from '../forms/model/SearchModels';
 
 const SearchPage = () => {
-  const [name, setName] = useState('');
+  const [search, setSearch] = useState({ name: '', type: SEARCH_TYPE_DEFAULT.value });
   const data = useDataEvents();
 
-  const handleChange = (e) => setName(e.target.value)
+  React.useEffect(() => {
+    data.onSearch(search);
+  }, []);
+
+  const handleChange = (e) => {
+    const newItem = { ...search };
+    newItem[e.target.name] = e.target.value;
+
+    setSearch(newItem);
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    data.onSearch(name);
+    data.onSearch(search);
   }
 
   return (
       <Stack marginTop={3}>
-        <form onSubmit={handleSubmit}>
-          <Stack direction="row" alignItems="flex-end" spacing={1}>
-            <Typography>
-              Enter the name of a doctor:
-            </Typography>
-            <Input id="Name" type="text" sx={{ width: 200 }} value={name} required onChange={handleChange} />
-            <Button type="submit" variant="outlined">Search</Button>
-          </Stack>
-        </form>
+        <SearchForm onSubmit={handleSubmit} {...{ search, handleChange }}/>
         <AppDataGrid {...data} />
       </Stack>
   )

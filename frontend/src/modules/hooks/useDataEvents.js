@@ -15,12 +15,12 @@ const useDataEvents = () => {
   const [results, setResults] = useState([]);
   const [rowCount, setRowCount] = useState(0);
 
-  const onSearch = (val='', page=DEFAULTS.page, pageSize=DEFAULTS.pageSize, sort=DEFAULTS.sort) => {
+  const onSearch = (val, page=DEFAULTS.page, pageSize=DEFAULTS.pageSize, sort=DEFAULTS.sort) => {
     setSearchVal(val);
     setPageSize(pageSize);
     setSort(sort);
     val !== searchVal ? setPage(0) : setPage(page);
-    search({ name: val, pageSize, page }).then(json => {
+    search({ name: val.name, pageSize, page }).then(json => {
       setResults(json.results);
       setRowCount(json.totalResults);
     }).catch(error => {
