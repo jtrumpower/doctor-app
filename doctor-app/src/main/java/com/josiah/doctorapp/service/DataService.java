@@ -1,7 +1,5 @@
 package com.josiah.doctorapp.service;
 
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.josiah.doctorapp.api.DatastoreApi;
 import com.josiah.doctorapp.api.MetastoreApi;
 import com.josiah.doctorapp.api.model.request.DatastoreRequest;

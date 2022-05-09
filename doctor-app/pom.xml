@@ -49,11 +49,11 @@
       <groupId>com.fasterxml.jackson.jaxrs</groupId>
       <version>${jackson-json-provider.version}</version>
     </dependency>
-    <dependency>
+    <!--<dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-csv</artifactId>
       <version>${jackson-csv.verison}</version>
-    </dependency>
+    </dependency>-->
     <!-- https://mvnrepository.com/artifact/com.opencsv/opencsv -->
     <dependency>
       <groupId>com.opencsv</groupId>

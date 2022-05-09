@@ -1,7 +1,6 @@
 package com.josiah.doctorapp.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.josiah.doctorapp.api.DatastoreApi;
 import com.josiah.doctorapp.api.MetastoreApi;
@@ -15,10 +14,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DoctorConfig {
 
-  @Bean
+  /*@Bean
   public CsvMapper csvMapper() {
     return new CsvMapper();
-  }
+  }*/
 
   @Bean
   public JacksonJaxbJsonProvider jacksonJaxbJsonProvider() {
