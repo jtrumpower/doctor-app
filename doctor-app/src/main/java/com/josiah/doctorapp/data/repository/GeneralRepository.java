@@ -1,5 +1,6 @@
 package com.josiah.doctorapp.data.repository;
 
+import static com.josiah.doctorapp.data.constant.QueryConstants.WHERE_NAME;
 import static org.hibernate.jpa.QueryHints.HINT_CACHEABLE;
 import static org.hibernate.jpa.QueryHints.HINT_FETCH_SIZE;
 import static org.hibernate.jpa.QueryHints.HINT_PASS_DISTINCT_THROUGH;
@@ -16,7 +17,6 @@ import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 
 @Repository
 public interface GeneralRepository extends PagingAndSortingRepository<GeneralEntity, Integer> {
@@ -35,14 +35,8 @@ public interface GeneralRepository extends PagingAndSortingRepository<GeneralEnt
       nativeQuery = true)
   Page<GeneralEntity> getAllNative(Pageable pageable);
 
-  @Query(value = "select * from general_data "
-      + "where lower(physician_first_name) like concat('%',lower(:val),'%') "
-      + "or lower(physician_middle_name) like concat('%',lower(:val),'%') "
-      + "or lower(physician_last_name) like concat('%',lower(:val),'%')",
-      countQuery = "SELECT count(*) FROM general_data "
-          + "where lower(physician_first_name) like concat('%',lower(:val),'%') "
-          + "or lower(physician_middle_name) like concat('%',lower(:val),'%') "
-          + "or lower(physician_last_name) like concat('%',lower(:val),'%')",
+  @Query(value = "select * from general_data " + WHERE_NAME,
+      countQuery = "SELECT count(*) FROM general_data " + WHERE_NAME,
       nativeQuery = true)
   Page<GeneralEntity> getByName(@Param("val") String val, Pageable pageable);
 }
