@@ -30,11 +30,19 @@ public interface GeneralRepository extends PagingAndSortingRepository<GeneralEnt
   })
   Stream<GeneralEntity> getAll();
 
-  @Query(value = "select * from general_data", nativeQuery = true)
+  @Query(value = "select * from general_data",
+      countQuery = "SELECT COUNT(*) FROM general_data",
+      nativeQuery = true)
   Page<GeneralEntity> getAllNative(Pageable pageable);
 
-  @Query(value = "select * from general_data where physician_first_name like lower(:val)",
-      countQuery = "SELECT count(*) FROM general_data WHERE physician_first_name like lower(:val)",
+  @Query(value = "select * from general_data "
+      + "where lower(physician_first_name) like concat('%',lower(:val),'%') "
+      + "or lower(physician_middle_name) like concat('%',lower(:val),'%') "
+      + "or lower(physician_last_name) like concat('%',lower(:val),'%')",
+      countQuery = "SELECT count(*) FROM general_data "
+          + "where lower(physician_first_name) like concat('%',lower(:val),'%') "
+          + "or lower(physician_middle_name) like concat('%',lower(:val),'%') "
+          + "or lower(physician_last_name) like concat('%',lower(:val),'%')",
       nativeQuery = true)
-  Page<GeneralEntity> getByColumn(@Param("val") String val, Pageable pageable);
+  Page<GeneralEntity> getByName(@Param("val") String val, Pageable pageable);
 }

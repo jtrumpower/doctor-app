@@ -45,7 +45,7 @@ public class SearchService {
     if (StringUtils.isEmpty(params.getValue())) {
       pageResults = repository.getAllNative(pageable);
     } else {
-      pageResults = repository.getByColumn(
+      pageResults = repository.getByName(
           params.getValue(),
           pageable);
     }
