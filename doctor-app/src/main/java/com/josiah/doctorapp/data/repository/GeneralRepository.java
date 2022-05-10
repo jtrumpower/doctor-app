@@ -1,6 +1,9 @@
 package com.josiah.doctorapp.data.repository;
 
+import static com.josiah.doctorapp.data.constant.QueryConstants.WHERE_FORM_OF_PAYMENT;
 import static com.josiah.doctorapp.data.constant.QueryConstants.WHERE_NAME;
+import static com.josiah.doctorapp.data.constant.QueryConstants.WHERE_NATURE_OF_PAYMENT;
+import static com.josiah.doctorapp.data.constant.QueryConstants.WHERE_TEACHING_HOSPITAL_NAME;
 import static org.hibernate.jpa.QueryHints.HINT_CACHEABLE;
 import static org.hibernate.jpa.QueryHints.HINT_FETCH_SIZE;
 import static org.hibernate.jpa.QueryHints.HINT_PASS_DISTINCT_THROUGH;
@@ -39,4 +42,19 @@ public interface GeneralRepository extends PagingAndSortingRepository<GeneralEnt
       countQuery = "SELECT count(*) FROM general_data " + WHERE_NAME,
       nativeQuery = true)
   Page<GeneralEntity> getByName(@Param("val") String val, Pageable pageable);
+
+  @Query(value = "select * from general_data " + WHERE_NATURE_OF_PAYMENT,
+      countQuery = "SELECT count(*) FROM general_data " + WHERE_NATURE_OF_PAYMENT,
+      nativeQuery = true)
+  Page<GeneralEntity> getByNatureOfPayment(@Param("val") String val, Pageable pageable);
+
+  @Query(value = "select * from general_data " + WHERE_FORM_OF_PAYMENT,
+      countQuery = "SELECT count(*) FROM general_data " + WHERE_FORM_OF_PAYMENT,
+      nativeQuery = true)
+  Page<GeneralEntity> getByFormOfPayment(@Param("val") String val, Pageable pageable);
+
+  @Query(value = "select * from general_data " + WHERE_TEACHING_HOSPITAL_NAME,
+      countQuery = "SELECT count(*) FROM general_data " + WHERE_TEACHING_HOSPITAL_NAME,
+      nativeQuery = true)
+  Page<GeneralEntity> getByTeachingHospitalName(@Param("val") String val, Pageable pageable);
 }

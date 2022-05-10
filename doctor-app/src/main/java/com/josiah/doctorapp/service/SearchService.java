@@ -4,6 +4,7 @@ import com.josiah.doctorapp.controller.model.request.SearchRequest;
 import com.josiah.doctorapp.controller.model.response.SearchResponse;
 import com.josiah.doctorapp.data.entity.GeneralEntity;
 import com.josiah.doctorapp.data.repository.GeneralRepository;
+import com.josiah.doctorapp.service.enums.RowTypeEnum;
 import com.josiah.doctorapp.service.mapper.GeneralRowMapper;
 import com.josiah.doctorapp.service.mapper.SortMapper;
 import java.util.stream.Collectors;
@@ -44,6 +45,18 @@ public class SearchService {
     Page<GeneralEntity> pageResults;
     if (StringUtils.isEmpty(params.getValue())) {
       pageResults = repository.getAllNative(pageable);
+    } else if (params.getRowType().equals(RowTypeEnum.FORM_OF_PAYMENT)) {
+      pageResults = repository.getByFormOfPayment(
+          params.getValue(),
+          pageable);
+    } else if (params.getRowType().equals(RowTypeEnum.NATURE_OF_PAYMENT)) {
+      pageResults = repository.getByNatureOfPayment(
+          params.getValue(),
+          pageable);
+    } else if (params.getRowType().equals(RowTypeEnum.TEACHING_HOSPITAL_NAME)) {
+      pageResults = repository.getByTeachingHospitalName(
+          params.getValue(),
+          pageable);
     } else {
       pageResults = repository.getByName(
           params.getValue(),
