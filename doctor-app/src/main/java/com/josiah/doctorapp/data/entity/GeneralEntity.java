@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
         @Index(name = "record_number_idx", columnList = "record_number", unique = true),
         @Index(name = "change_type_idx", columnList = "change_type"),
         @Index(name = "nature_idx", columnList = "nature_of_payment_or_transfer_of_value"),
+        @Index(name = "form_idx", columnList = "form_of_payment_or_transfer_of_value"),
         @Index(name = "first_name_idx", columnList = "physician_first_name"),
         @Index(name = "last_name_idx", columnList = "physician_last_name"),
         @Index(name = "primary_type_idx", columnList = "physician_primary_type"),

@@ -6,16 +6,15 @@ import static org.hibernate.jpa.QueryHints.HINT_PASS_DISTINCT_THROUGH;
 import static org.hibernate.jpa.QueryHints.HINT_READONLY;
 
 import com.josiah.doctorapp.data.entity.GeneralEntity;
-import java.util.UUID;
 import java.util.stream.Stream;
 import javax.persistence.QueryHint;
+import lombok.val;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
@@ -31,5 +30,11 @@ public interface GeneralRepository extends PagingAndSortingRepository<GeneralEnt
   })
   Stream<GeneralEntity> getAll();
 
-  Page<GeneralEntity> findByPhysicianFirstNameLikeOrPhysicianLastNameLike(String first, String last, Pageable pageable);
+  @Query(value = "select * from general_data", nativeQuery = true)
+  Page<GeneralEntity> getAllNative(Pageable pageable);
+
+  @Query(value = "select * from general_data where physician_first_name like lower(:val)",
+      countQuery = "SELECT count(*) FROM general_data WHERE physician_first_name like lower(:val)",
+      nativeQuery = true)
+  Page<GeneralEntity> getByColumn(@Param("val") String val, Pageable pageable);
 }

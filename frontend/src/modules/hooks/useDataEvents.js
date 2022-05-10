@@ -20,7 +20,7 @@ const useDataEvents = () => {
     setPageSize(pageSize);
     setSorting(sorting);
     val !== searchVal ? setPage(0) : setPage(page);
-    search({ name: val.name, pageSize, page, sorting }).then(json => {
+    search({ pageSize, page, sorting, ...val }).then(json => {
       setResults(json.results);
       setRowCount(json.totalResults);
     }).catch(error => {

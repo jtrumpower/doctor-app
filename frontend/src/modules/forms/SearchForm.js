@@ -20,12 +20,12 @@ const SearchForm = ({ search, onSubmit, handleChange}) => {
           </Typography>
           <Select
               labelId={'type-label'}
-              value={search.type}
+              value={search.column}
               onChange={handleChange}
               variant="standard"
               inputProps={{
-                name: 'type',
-                id: 'type',
+                name: 'column',
+                id: 'column',
               }}
           >
             { SEARCH_TYPES.map((type, index) =>
@@ -36,7 +36,7 @@ const SearchForm = ({ search, onSubmit, handleChange}) => {
           <Typography>
             Enter the name of a doctor:
           </Typography>
-          <Input id="name" name="name" type="text" sx={{ width: 200 }} value={search.name} required onChange={handleChange} />
+          <Input id="value" name="value" type="text" sx={{ width: 200 }} value={search.value} required onChange={handleChange} />
           <Button type="submit" variant="outlined">Search</Button>
         </Stack>
       </form>
