@@ -3,7 +3,7 @@ import {
   Input, InputLabel,
   MenuItem,
   Select,
-  Stack,
+  Stack, TextField,
   Typography
 } from '@mui/material';
 import React from 'react';
@@ -15,10 +15,9 @@ const SearchForm = ({ search, onSubmit, handleChange}) => {
   return (
       <form onSubmit={onSubmit}>
         <Stack direction="row" alignItems="flex-end" spacing={1} marginTop={1}>
-          <Typography width={225}>
-            Enter the name of a doctor:
-          </Typography>
-          <Input id="value" name="value" type="text" sx={{ width: 200 }} value={search.value} required onChange={handleChange} />
+          <FormControl>
+            <TextField id="value" variant="standard" name="value" label="Search" sx={{ width: 200 }} value={search.value} onChange={handleChange} />
+          </FormControl>
           <FormControl variant="standard">
             <InputLabel id="type-label">Column</InputLabel>
             <Select
