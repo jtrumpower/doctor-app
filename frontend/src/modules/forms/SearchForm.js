@@ -22,12 +22,12 @@ const SearchForm = ({ search, onSubmit, handleChange}) => {
             <InputLabel id="type-label">Column</InputLabel>
             <Select
                 labelId={'type-label'}
-                value={search.rowType}
+                value={search.columns}
                 onChange={handleChange}
                 sx={{ width: 200 }}
                 inputProps={{
-                  name: 'rowType',
-                  id: 'rowType',
+                  name: 'columns',
+                  id: 'columns',
                 }}
             >
               { SEARCH_TYPES.map((type, index) =>

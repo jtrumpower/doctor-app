@@ -6,7 +6,7 @@ import SearchForm from '../forms/SearchForm';
 import {SEARCH_TYPE_DEFAULT} from '../forms/model/SearchModels';
 
 const SearchPage = () => {
-  const [search, setSearch] = useState({ value: '', rowType: SEARCH_TYPE_DEFAULT.value });
+  const [search, setSearch] = useState({ value: '', columns: SEARCH_TYPE_DEFAULT.value });
   const data = useDataEvents();
 
   React.useEffect(() => {

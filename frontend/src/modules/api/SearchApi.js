@@ -1,4 +1,4 @@
-const url = "http://localhost:8080/api/search"
+const url = "http://localhost:8080/api/search/jdbc"
 
 export const search = (params) => {
 
