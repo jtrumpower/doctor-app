@@ -1,0 +1,81 @@
+package com.josiah.doctorapp.data.rowmapper;
+
+import com.josiah.doctorapp.api.constants.Constants.Column;
+import com.josiah.doctorapp.service.model.GeneralRow;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
+
+public class GeneralRowMapper implements RowMapper<GeneralRow> {
+
+  @Override
+  public GeneralRow mapRow(ResultSet rs, int rowNum) throws SQLException {
+    return GeneralRow.builder()
+        .applicableManufacturerOrGpoPaymentCountry(rs.getString(Column.APPLICABLE_MAN_OR_GPO_PAYMENT_COUNTRY))
+        .applicableManufacturerOrGpoPaymentId(rs.getString(Column.APPLICABLE_MAN_OR_GPO_PAYMENT_ID))
+        .applicableManufacturerOrGpoPaymentName(rs.getString(Column.APPLICABLE_MAN_OR_GPO_PAYMENT_NAME))
+        .applicableManufacturerOrGpoPaymentState(rs.getString(Column.APPLICABLE_MAN_OR_GPO_PAYMENT_STATE))
+        .changeType(rs.getString(Column.CHANGE_TYPE))
+        .charityIndicator(rs.getString(Column.CHARITY_INDICATOR))
+        .cityOfTravel(rs.getString(Column.CITY_OF_TRAVEL))
+        .contextualInformation(rs.getString(Column.CONTEXTUAL_INFORMATION))
+        .countryOfTravel(rs.getString(Column.COUNTRY_OF_TRAVEL))
+        .coveredRecipientType(rs.getString(Column.COVERED_RECIPIENT_TYPE))
+        .dateOfPayment(rs.getString(Column.DATE_OF_PAYMENT))
+        .delayInPublicationIndicator(rs.getString(Column.DELAY_IN_PUBLICATION_IND))
+        .disputeStatusForPublication(rs.getString(Column.DISPUTE_STATUS_FOR_PUBLICATION))
+        .formOfPaymentOrTransferOfValue(rs.getString(Column.FORM_OF_PAYMENT))
+        .nameOfAssociatedCoveredDeviceOrMedicalSupply1(rs.getString(Column.NAME_OF_ASSOCIATED_DEVICE_OR_SUPPLY_1))
+        .nameOfAssociatedCoveredDeviceOrMedicalSupply2(rs.getString(Column.NAME_OF_ASSOCIATED_DEVICE_OR_SUPPLY_2))
+        .nameOfAssociatedCoveredDeviceOrMedicalSupply3(rs.getString(Column.NAME_OF_ASSOCIATED_DEVICE_OR_SUPPLY_3))
+        .nameOfAssociatedCoveredDeviceOrMedicalSupply4(rs.getString(Column.NAME_OF_ASSOCIATED_DEVICE_OR_SUPPLY_4))
+        .nameOfAssociatedCoveredDeviceOrMedicalSupply5(rs.getString(Column.NAME_OF_ASSOCIATED_DEVICE_OR_SUPPLY_5))
+        .nameOfAssociatedCoveredDrugOrBiological1(rs.getString(Column.NAME_OF_ASSOCIATED_DRUG_OR_BIO_1))
+        .nameOfAssociatedCoveredDrugOrBiological2(rs.getString(Column.NAME_OF_ASSOCIATED_DRUG_OR_BIO_2))
+        .nameOfAssociatedCoveredDrugOrBiological3(rs.getString(Column.NAME_OF_ASSOCIATED_DRUG_OR_BIO_3))
+        .nameOfAssociatedCoveredDrugOrBiological4(rs.getString(Column.NAME_OF_ASSOCIATED_DRUG_OR_BIO_4))
+        .nameOfAssociatedCoveredDrugOrBiological5(rs.getString(Column.NAME_OF_ASSOCIATED_DRUG_OR_BIO_5))
+        .nameOfEntityReceivingPaymentOrTransferOfValue(rs.getString(Column.NAME_OF_ENTITY_RECEIVING_PAYMENT))
+        .natureOfPaymentOrTransferOfValue(rs.getString(Column.NATURE_OF_PAYMENT))
+        .ndcOfAssociatedCoveredDrugOrBiological1(rs.getString(Column.NDC_OF_ASSOCIATED_DRUG_OR_BIO_1))
+        .ndcOfAssociatedCoveredDrugOrBiological2(rs.getString(Column.NDC_OF_ASSOCIATED_DRUG_OR_BIO_2))
+        .ndcOfAssociatedCoveredDrugOrBiological3(rs.getString(Column.NDC_OF_ASSOCIATED_DRUG_OR_BIO_3))
+        .ndcOfAssociatedCoveredDrugOrBiological4(rs.getString(Column.NDC_OF_ASSOCIATED_DRUG_OR_BIO_4))
+        .ndcOfAssociatedCoveredDrugOrBiological5(rs.getString(Column.NDC_OF_ASSOCIATED_DRUG_OR_BIO_5))
+        .numberOfPaymentsInTotalAmount(rs.getInt(Column.NUMBER_OF_PAYMENTS_IN_TOTAL))
+        .paymentPublicationDate(rs.getString(Column.PAYMENT_PUBLICATION_DATE))
+        .physicianFirstName(rs.getString(Column.PHYSICIAN_FIRST_NAME))
+        .physicianLastName(rs.getString(Column.PHYSICIAN_LAST_NAME))
+        .physicianLicenseStateCode1(rs.getString(Column.PHYSICIAN_LICENSE_STATE_CODE_1))
+        .physicianLicenseStateCode2(rs.getString(Column.PHYSICIAN_LICENSE_STATE_CODE_2))
+        .physicianLicenseStateCode3(rs.getString(Column.PHYSICIAN_LICENSE_STATE_CODE_3))
+        .physicianLicenseStateCode4(rs.getString(Column.PHYSICIAN_LICENSE_STATE_CODE_4))
+        .physicianLicenseStateCode5(rs.getString(Column.PHYSICIAN_LICENSE_STATE_CODE_5))
+        .physicianMiddleName(rs.getString(Column.PHYSICIAN_MIDDLE_NAME))
+        .physicianNameSuffix(rs.getString(Column.PHYSICIAN_NAME_SUFFIX))
+        .physicianOwnershipIndicator(rs.getString(Column.PHYSICIAN_OWNERSHIP_INDICATOR))
+        .physicianPrimaryType(rs.getString(Column.PHYSICIAN_PRIMARY_TYPE))
+        .physicianProfileId(rs.getString(Column.PHYSICIAN_PROFILE_ID))
+        .physicianSpecialty(rs.getString(Column.PHYSICIAN_SPECIALTY))
+        .productIndicator(rs.getString(Column.PRODUCT_INDICATOR))
+        .programYear(rs.getString(Column.PROGRAM_YEAR))
+        .recipientCity(rs.getString(Column.RECIPIENT_CITY))
+        .recipientCountry(rs.getString(Column.RECIPIENT_COUNTRY))
+        .recipientPostalCode(rs.getString(Column.RECIPIENT_POSTAL_CODE))
+        .recipientPrimaryBusinessStreet1(rs.getString(Column.RECIPIENT_PRIMARY_BUSINESS_STREET_1))
+        .recipientPrimaryBusinessStreet2(rs.getString(Column.RECIPIENT_PRIMARY_BUSINESS_STREET_2))
+        .recipientProvince(rs.getString(Column.RECIPIENT_PROVINCE))
+        .recipientState(rs.getString(Column.RECIPIENT_STATE))
+        .recipientZipCode(rs.getString(Column.RECIPIENT_ZIP_CODE))
+        .recordId(rs.getLong(Column.RECORD_ID))
+        .stateOfTravel(rs.getString(Column.STATE_OF_TRAVEL))
+        .submittingApplicableManufacturerOrGpoName(rs.getString(Column.SUBMITTING_APPLICABLE_MAN_OR_GPO_NAME))
+        .teachingHospitalCCN(rs.getString(Column.TEACHING_HOSPITAL_CCN))
+        .teachingHospitalId(rs.getString(Column.TEACHING_HOSPITAL_ID))
+        .teachingHospitalName(rs.getString(Column.TEACHING_HOSPITAL_NAME))
+        .thirdPartyEqualsCoveredRecipientIndicator(rs.getString(Column.THIRD_PARTY_EQUALS_COVERED_RECIPIENT_IND))
+        .thirdPartyPaymentRecipientIndicator(rs.getString(Column.THIRD_PARTY_PAYMENT_RECIPIENT_IND))
+        .totalAmountOfPaymentUsDollars(rs.getDouble(Column.TOTAL_PAYMENT_DOLLARS))
+        .build();
+  }
+}
