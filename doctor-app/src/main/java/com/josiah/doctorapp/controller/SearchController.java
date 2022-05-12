@@ -3,6 +3,7 @@ package com.josiah.doctorapp.controller;
 import com.josiah.doctorapp.controller.model.request.SearchRequestEnum;
 import com.josiah.doctorapp.controller.model.request.SearchRequestJdbc;
 import com.josiah.doctorapp.controller.model.response.PagedSearchResponse;
+import com.josiah.doctorapp.controller.model.response.SearchResponse;
 import com.josiah.doctorapp.service.SearchServiceImpl;
 import com.josiah.doctorapp.service.SearchServiceJdbcImpl;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,7 +33,7 @@ public class SearchController {
   }
 
   @PostMapping("/search/typeahead")
-  public PagedSearchResponse searchTypeahead(@RequestBody SearchRequestJdbc searchRequest) {
+  public SearchResponse searchTypeahead(@RequestBody SearchRequestJdbc searchRequest) {
     return jdbcService.search(searchRequest);
   }
 }

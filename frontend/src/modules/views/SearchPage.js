@@ -16,6 +16,9 @@ const SearchPage = () => {
   const handleChange = (e) => {
     const newItem = { ...search };
     newItem[e.target.name] = e.target.value;
+    if (e.target.name === 'columns') {
+      newItem.value = '';
+    }
 
     setSearch(newItem);
   }

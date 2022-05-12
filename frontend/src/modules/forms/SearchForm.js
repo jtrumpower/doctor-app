@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 import {SEARCH_TYPES} from './model/SearchModels';
+import AppTypeahead from "../components/AppTypeahead";
 
 
 const SearchForm = ({ search, onSubmit, handleChange}) => {
@@ -15,9 +16,7 @@ const SearchForm = ({ search, onSubmit, handleChange}) => {
   return (
       <form onSubmit={onSubmit}>
         <Stack direction="row" alignItems="flex-end" spacing={1} marginTop={1}>
-          <FormControl>
-            <TextField id="value" variant="standard" name="value" label="Search" sx={{ width: 200 }} value={search.value} onChange={handleChange} />
-          </FormControl>
+          <AppTypeahead {...{search, handleChange}} />
           <FormControl variant="standard">
             <InputLabel id="type-label">Column</InputLabel>
             <Select

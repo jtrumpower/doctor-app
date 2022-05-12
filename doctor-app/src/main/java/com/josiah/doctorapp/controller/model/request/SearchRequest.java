@@ -1,5 +1,6 @@
 package com.josiah.doctorapp.controller.model.request;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder.Default;
@@ -17,5 +18,6 @@ public class SearchRequest {
   private int page = 0;
   @Default
   private int pageSize = 25;
-  private List<Sorting> sorting;
+  @Default
+  private List<Sorting> sorting = new ArrayList<>();
 }

@@ -2,6 +2,7 @@ package com.josiah.doctorapp.service;
 
 import com.josiah.doctorapp.controller.model.request.SearchRequestEnum;
 import com.josiah.doctorapp.controller.model.response.PagedSearchResponse;
+import com.josiah.doctorapp.controller.model.response.SearchResponse;
 import com.josiah.doctorapp.data.entity.GeneralEntity;
 import com.josiah.doctorapp.data.repository.GeneralRepository;
 import com.josiah.doctorapp.service.enums.RowTypeEnum;
@@ -41,7 +42,7 @@ public class SearchServiceImpl implements SearchService<SearchRequestEnum> {
   }
 
   @Override
-  public PagedSearchResponse search(SearchRequestEnum params) {
+  public SearchResponse search(SearchRequestEnum params) {
     return null;
   }
 

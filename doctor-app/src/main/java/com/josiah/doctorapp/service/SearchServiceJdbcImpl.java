@@ -2,7 +2,9 @@ package com.josiah.doctorapp.service;
 
 import com.josiah.doctorapp.controller.model.request.SearchRequestJdbc;
 import com.josiah.doctorapp.controller.model.response.PagedSearchResponse;
+import com.josiah.doctorapp.controller.model.response.SearchResponse;
 import com.josiah.doctorapp.data.GeneralStatementCreator;
+import com.josiah.doctorapp.data.rowmapper.GeneralRowMapper;
 import com.josiah.doctorapp.service.mapper.SortMapper;
 import com.josiah.doctorapp.service.model.GeneralRow;
 import java.util.Arrays;
@@ -47,11 +49,11 @@ public class SearchServiceJdbcImpl implements SearchService<SearchRequestJdbc> {
         .build();
   }
 
-  public PagedSearchResponse search(SearchRequestJdbc params) {
+  public SearchResponse search(SearchRequestJdbc params) {
 
     Slice<GeneralRow> pageResults = getSliceResults(params);
 
-    return PagedSearchResponse.builder()
+    return SearchResponse.builder()
         .results(pageResults.getContent())
         .build();
   }
@@ -61,7 +63,7 @@ public class SearchServiceJdbcImpl implements SearchService<SearchRequestJdbc> {
 
     List<GeneralRow> rows = jdbcTemplate.query(
         new GeneralStatementCreator(params, sortMapper),
-        new com.josiah.doctorapp.data.rowmapper.GeneralRowMapper());
+        new GeneralRowMapper());
     Integer count = getCount(params, pageable);
 
     return new PageImpl<>(rows, pageable, count);
@@ -72,7 +74,7 @@ public class SearchServiceJdbcImpl implements SearchService<SearchRequestJdbc> {
 
     List<GeneralRow> rows = jdbcTemplate.query(
         new GeneralStatementCreator(params, sortMapper),
-        new com.josiah.doctorapp.data.rowmapper.GeneralRowMapper());
+        new GeneralRowMapper());
 
     return new SliceImpl<>(rows, pageable, false);
   }
@@ -96,7 +98,7 @@ public class SearchServiceJdbcImpl implements SearchService<SearchRequestJdbc> {
     if (!StringUtils.isEmpty(params.getColumns()) && !StringUtils.isEmpty(params.getValue())) {
       return Optional.of(" where " +
           Arrays.stream(params.getColumns().split("\\|"))
-              .map(val -> String.format("lower(%s) like '%%%s%%'", val, params.getValue()))
+              .map(val -> String.format("%s like '%%%s%%'", val, params.getValue()))
               .collect(Collectors.joining(" or ")));
     }
 
