@@ -26,7 +26,7 @@ public class FreshDataService implements DataService<FreshLoadDataParam> {
   @Override
   public void process(FreshLoadDataParam param) {
     try {
-      if (param.isGetNewFile()) {
+      if (!fileHelper.getFile(csvProperties.getLocation()).exists() || param.isNewFile()) {
         downloadHelper.downloadFile();
       }
 

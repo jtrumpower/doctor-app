@@ -42,7 +42,7 @@ public class JobEntity {
   private String description;
 
   @CreatedDate
-  @Column(name = "created", columnDefinition = "timestamp")
+  @Column(name = "created", columnDefinition = "timestamp default current_timestamp")
   private Timestamp created;
 
   @Column(name = "completed", columnDefinition = "timestamp null")
