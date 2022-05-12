@@ -14,17 +14,21 @@ const useDataEvents = () => {
   const [sorting, setSorting] = useState(DEFAULTS.sort)
   const [results, setResults] = useState([]);
   const [rowCount, setRowCount] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const onSearch = (val, page=DEFAULTS.page, pageSize=DEFAULTS.pageSize, sorting=DEFAULTS.sorting) => {
     setSearchVal(val);
     setPageSize(pageSize);
     setSorting(sorting);
     val !== searchVal ? setPage(0) : setPage(page);
-    search({ pageSize, page, sorting, ...val }).then(json => {
+    setLoading(true);
+    search({ pageSize, page, sorting, ...val }, true).then(json => {
       setResults(json.results);
       setRowCount(json.totalResults);
     }).catch(error => {
 
+    }).finally(() => {
+      setLoading(false);
     })
   }
 
@@ -41,7 +45,7 @@ const useDataEvents = () => {
     onSearch(searchVal, 0, pageSize, sorting);
   }
 
-  return {...{results, page, pageSize, sorting, rowCount, onSearch, onPageChange, onPageSizeChange, onSortChange}}
+  return {...{results, page, pageSize, sorting, rowCount, loading, onSearch, onPageChange, onPageSizeChange, onSortChange}}
 }
 
 export default useDataEvents;

@@ -4,6 +4,7 @@ package com.josiah.doctorapp.service.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.josiah.doctorapp.api.constants.Constants.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -81,134 +82,134 @@ import lombok.NoArgsConstructor;
     "paymentPublicationDate"
 })
 public class GeneralRow {
-  @JsonProperty("change_type")
+  @JsonProperty(Column.CHANGE_TYPE)
   private String changeType;
-  @JsonProperty("covered_recipient_type")
+  @JsonProperty(Column.COVERED_RECIPIENT_TYPE)
   private String coveredRecipientType;
-  @JsonProperty("teaching_hospital_ccn")
+  @JsonProperty(Column.TEACHING_HOSPITAL_CCN)
   private String teachingHospitalCCN;
-  @JsonProperty("teaching_hospital_id")
+  @JsonProperty(Column.TEACHING_HOSPITAL_ID)
   private String teachingHospitalId;
-  @JsonProperty("teaching_hospital_name")
+  @JsonProperty(Column.TEACHING_HOSPITAL_NAME)
   private String teachingHospitalName;
-  @JsonProperty("physician_profile_id")
+  @JsonProperty(Column.PHYSICIAN_PROFILE_ID)
   private String physicianProfileId;
-  @JsonProperty("physician_first_name")
+  @JsonProperty(Column.PHYSICIAN_FIRST_NAME)
   private String physicianFirstName;
-  @JsonProperty("physician_middle_name")
+  @JsonProperty(Column.PHYSICIAN_MIDDLE_NAME)
   private String physicianMiddleName;
-  @JsonProperty("physician_last_name")
+  @JsonProperty(Column.PHYSICIAN_LAST_NAME)
   private String physicianLastName;
-  @JsonProperty("physician_name_suffix")
+  @JsonProperty(Column.PHYSICIAN_NAME_SUFFIX)
   private String physicianNameSuffix;
-  @JsonProperty("recipient_primary_business_street_address_line1")
+  @JsonProperty(Column.RECIPIENT_PRIMARY_BUSINESS_STREET_1)
   private String recipientPrimaryBusinessStreet1;
-  @JsonProperty("recipient_primary_business_street_address_line2")
+  @JsonProperty(Column.RECIPIENT_PRIMARY_BUSINESS_STREET_2)
   private String recipientPrimaryBusinessStreet2;
-  @JsonProperty("recipient_city")
+  @JsonProperty(Column.RECIPIENT_CITY)
   private String recipientCity;
-  @JsonProperty("recipient_state")
+  @JsonProperty(Column.RECIPIENT_STATE)
   private String recipientState;
-  @JsonProperty("recipient_zip_code")
+  @JsonProperty(Column.RECIPIENT_ZIP_CODE)
   private String recipientZipCode;
-  @JsonProperty("recipient_country")
+  @JsonProperty(Column.RECIPIENT_COUNTRY)
   private String recipientCountry;
-  @JsonProperty("recipient_province")
+  @JsonProperty(Column.RECIPIENT_PROVINCE)
   private String recipientProvince;
-  @JsonProperty("recipient_postal_code")
+  @JsonProperty(Column.RECIPIENT_POSTAL_CODE)
   private String recipientPostalCode;
-  @JsonProperty("physician_primary_type")
+  @JsonProperty(Column.PHYSICIAN_PRIMARY_TYPE)
   private String physicianPrimaryType;
-  @JsonProperty("physician_specialty")
+  @JsonProperty(Column.PHYSICIAN_SPECIALTY)
   private String physicianSpecialty;
-  @JsonProperty("physician_license_state_code1")
+  @JsonProperty(Column.PHYSICIAN_LICENSE_STATE_CODE_1)
   private String physicianLicenseStateCode1;
-  @JsonProperty("physician_license_state_code2")
+  @JsonProperty(Column.PHYSICIAN_LICENSE_STATE_CODE_2)
   private String physicianLicenseStateCode2;
-  @JsonProperty("physician_license_state_code3")
+  @JsonProperty(Column.PHYSICIAN_LICENSE_STATE_CODE_3)
   private String physicianLicenseStateCode3;
-  @JsonProperty("physician_license_state_code4")
+  @JsonProperty(Column.PHYSICIAN_LICENSE_STATE_CODE_4)
   private String physicianLicenseStateCode4;
-  @JsonProperty("physician_license_state_code5")
+  @JsonProperty(Column.PHYSICIAN_LICENSE_STATE_CODE_5)
   private String physicianLicenseStateCode5;
-  @JsonProperty("submitting_applicable_manufacturer_or_applicable_gpo_name")
+  @JsonProperty(Column.SUBMITTING_APPLICABLE_MAN_OR_GPO_NAME)
   private String submittingApplicableManufacturerOrGpoName;
-  @JsonProperty("applicable_manufacturer_or_applicable_gpo_making_payment_id")
+  @JsonProperty(Column.APPLICABLE_MAN_OR_GPO_PAYMENT_ID)
   private String applicableManufacturerOrGpoPaymentId;
-  @JsonProperty("applicable_manufacturer_or_applicable_gpo_making_payment_name")
+  @JsonProperty(Column.APPLICABLE_MAN_OR_GPO_PAYMENT_NAME)
   private String applicableManufacturerOrGpoPaymentName;
-  @JsonProperty("applicable_manufacturer_or_applicable_gpo_making_payment_state")
+  @JsonProperty(Column.APPLICABLE_MAN_OR_GPO_PAYMENT_STATE)
   private String applicableManufacturerOrGpoPaymentState;
-  @JsonProperty("applicable_manufacturer_or_applicable_gpo_making_payment_country")
+  @JsonProperty(Column.APPLICABLE_MAN_OR_GPO_PAYMENT_COUNTRY)
   private String applicableManufacturerOrGpoPaymentCountry;
-  @JsonProperty("total_amount_of_payment_usdollars")
+  @JsonProperty(Column.TOTAL_PAYMENT_DOLLARS)
   private double totalAmountOfPaymentUsDollars;
-  @JsonProperty("date_of_payment")
+  @JsonProperty(Column.DATE_OF_PAYMENT)
   private String dateOfPayment;
-  @JsonProperty("number_of_payments_included_in_total_amount")
+  @JsonProperty(Column.NUMBER_OF_PAYMENTS_IN_TOTAL)
   private int numberOfPaymentsInTotalAmount;
-  @JsonProperty("form_of_payment_or_transfer_of_value")
+  @JsonProperty(Column.FORM_OF_PAYMENT)
   private String formOfPaymentOrTransferOfValue;
-  @JsonProperty("nature_of_payment_or_transfer_of_value")
+  @JsonProperty(Column.NATURE_OF_PAYMENT)
   private String natureOfPaymentOrTransferOfValue;
-  @JsonProperty("city_of_travel")
+  @JsonProperty(Column.CITY_OF_TRAVEL)
   private String cityOfTravel;
-  @JsonProperty("state_of_travel")
+  @JsonProperty(Column.STATE_OF_TRAVEL)
   private String stateOfTravel;
-  @JsonProperty("country_of_travel")
+  @JsonProperty(Column.COUNTRY_OF_TRAVEL)
   private String countryOfTravel;
-  @JsonProperty("physician_ownership_indicator")
+  @JsonProperty(Column.PHYSICIAN_OWNERSHIP_INDICATOR)
   private String physicianOwnershipIndicator;
-  @JsonProperty("third_party_payment_recipient_indicator")
+  @JsonProperty(Column.THIRD_PARTY_PAYMENT_RECIPIENT_IND)
   private String thirdPartyPaymentRecipientIndicator;
-  @JsonProperty("name_of_third_party_entity_receiving_payment_or_transfer_of_ccfc")
+  @JsonProperty(Column.NAME_OF_ENTITY_RECEIVING_PAYMENT)
   private String nameOfEntityReceivingPaymentOrTransferOfValue;
-  @JsonProperty("charity_indicator")
+  @JsonProperty(Column.CHARITY_INDICATOR)
   private String charityIndicator;
-  @JsonProperty("third_party_equals_covered_recipient_indicator")
+  @JsonProperty(Column.THIRD_PARTY_EQUALS_COVERED_RECIPIENT_IND)
   private String thirdPartyEqualsCoveredRecipientIndicator;
-  @JsonProperty("contextual_information")
+  @JsonProperty(Column.CONTEXTUAL_INFORMATION)
   private String contextualInformation;
-  @JsonProperty("delay_in_publication_indicator")
+  @JsonProperty(Column.DELAY_IN_PUBLICATION_IND)
   private String delayInPublicationIndicator;
-  @JsonProperty("record_id")
+  @JsonProperty(Column.RECORD_ID)
   private long recordId;
-  @JsonProperty("dispute_status_for_publication")
+  @JsonProperty(Column.DISPUTE_STATUS_FOR_PUBLICATION)
   private String disputeStatusForPublication;
-  @JsonProperty("product_indicator")
+  @JsonProperty(Column.PRODUCT_INDICATOR)
   private String productIndicator;
-  @JsonProperty("name_of_associated_covered_drug_or_biological1")
+  @JsonProperty(Column.NAME_OF_ASSOCIATED_DRUG_OR_BIO_1)
   private String nameOfAssociatedCoveredDrugOrBiological1;
-  @JsonProperty("name_of_associated_covered_drug_or_biological2")
+  @JsonProperty(Column.NAME_OF_ASSOCIATED_DRUG_OR_BIO_2)
   private String nameOfAssociatedCoveredDrugOrBiological2;
-  @JsonProperty("name_of_associated_covered_drug_or_biological3")
+  @JsonProperty(Column.NAME_OF_ASSOCIATED_DRUG_OR_BIO_3)
   private String nameOfAssociatedCoveredDrugOrBiological3;
-  @JsonProperty("name_of_associated_covered_drug_or_biological4")
+  @JsonProperty(Column.NAME_OF_ASSOCIATED_DRUG_OR_BIO_4)
   private String nameOfAssociatedCoveredDrugOrBiological4;
-  @JsonProperty("name_of_associated_covered_drug_or_biological5")
+  @JsonProperty(Column.NAME_OF_ASSOCIATED_DRUG_OR_BIO_5)
   private String nameOfAssociatedCoveredDrugOrBiological5;
-  @JsonProperty("ndc_of_associated_covered_drug_or_biological1")
+  @JsonProperty(Column.NDC_OF_ASSOCIATED_DRUG_OR_BIO_1)
   private String ndcOfAssociatedCoveredDrugOrBiological1;
-  @JsonProperty("ndc_of_associated_covered_drug_or_biological2")
+  @JsonProperty(Column.NDC_OF_ASSOCIATED_DRUG_OR_BIO_2)
   private String ndcOfAssociatedCoveredDrugOrBiological2;
-  @JsonProperty("ndc_of_associated_covered_drug_or_biological3")
+  @JsonProperty(Column.NDC_OF_ASSOCIATED_DRUG_OR_BIO_3)
   private String ndcOfAssociatedCoveredDrugOrBiological3;
-  @JsonProperty("ndc_of_associated_covered_drug_or_biological4")
+  @JsonProperty(Column.NDC_OF_ASSOCIATED_DRUG_OR_BIO_4)
   private String ndcOfAssociatedCoveredDrugOrBiological4;
-  @JsonProperty("ndc_of_associated_covered_drug_or_biological5")
+  @JsonProperty(Column.NDC_OF_ASSOCIATED_DRUG_OR_BIO_5)
   private String ndcOfAssociatedCoveredDrugOrBiological5;
-  @JsonProperty("name_of_associated_covered_device_or_medical_supply1")
+  @JsonProperty(Column.NAME_OF_ASSOCIATED_DEVICE_OR_SUPPLY_1)
   private String nameOfAssociatedCoveredDeviceOrMedicalSupply1;
-  @JsonProperty("name_of_associated_covered_device_or_medical_supply2")
+  @JsonProperty(Column.NAME_OF_ASSOCIATED_DEVICE_OR_SUPPLY_2)
   private String nameOfAssociatedCoveredDeviceOrMedicalSupply2;
-  @JsonProperty("name_of_associated_covered_device_or_medical_supply3")
+  @JsonProperty(Column.NAME_OF_ASSOCIATED_DEVICE_OR_SUPPLY_3)
   private String nameOfAssociatedCoveredDeviceOrMedicalSupply3;
-  @JsonProperty("name_of_associated_covered_device_or_medical_supply4")
+  @JsonProperty(Column.NAME_OF_ASSOCIATED_DEVICE_OR_SUPPLY_4)
   private String nameOfAssociatedCoveredDeviceOrMedicalSupply4;
-  @JsonProperty("name_of_associated_covered_device_or_medical_supply5")
+  @JsonProperty(Column.NAME_OF_ASSOCIATED_DEVICE_OR_SUPPLY_5)
   private String nameOfAssociatedCoveredDeviceOrMedicalSupply5;
-  @JsonProperty("program_year")
+  @JsonProperty(Column.PROGRAM_YEAR)
   private String programYear;
-  @JsonProperty("payment_publication_date")
+  @JsonProperty(Column.PAYMENT_PUBLICATION_DATE)
   private String paymentPublicationDate;
 }

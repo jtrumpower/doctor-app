@@ -66,11 +66,11 @@ export const COLUMNS = {
   totalAmountOfPaymentUsDollars: "total_amount_of_payment_usdollars",
 }
 
-export const SEARCH_TYPE_DEFAULT = { value: "NAME", text: "Name" };
+export const SEARCH_TYPE_DEFAULT = { value: `${COLUMNS.physicianFirstName}|${COLUMNS.physicianLastName}`, text: "First or last name" };
 
 export const SEARCH_TYPES = [
   SEARCH_TYPE_DEFAULT,
-  { value: 'NATURE_OF_PAYMENT', text: "Nature of payment"},
-  { value: 'FORM_OF_PAYMENT', text: "Form of payment"},
-  { value: 'TEACHING_HOSPITAL_NAME', text: "Teaching Hospital Name"},
+  { value: COLUMNS.natureOfPaymentOrTransferOfValue, text: "Nature of payment"},
+  { value: COLUMNS.formOfPaymentOrTransferOfValue, text: "Form of payment"},
+  { value: COLUMNS.teachingHospitalName, text: "Teaching Hospital Name"},
 ]

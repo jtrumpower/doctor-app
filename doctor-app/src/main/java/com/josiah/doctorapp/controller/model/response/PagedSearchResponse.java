@@ -1,16 +1,18 @@
 package com.josiah.doctorapp.controller.model.response;
 
-import com.josiah.doctorapp.service.model.GeneralRow;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
 
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchResponse {
-  List<GeneralRow> results;
+@EqualsAndHashCode(callSuper = true)
+public class PagedSearchResponse extends SearchResponse {
+  long totalResults;
+  int totalPages;
 }
