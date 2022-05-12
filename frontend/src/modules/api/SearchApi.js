@@ -1,8 +1,9 @@
-const url = "http://localhost:8080/api/search/jdbc"
+const url = "http://localhost:8080/api/search"
 
-export const search = (params) => {
+export const search = (params, paged) => {
+  const suffix = paged ? "paged" : "typeahead"
 
-  return fetch(url,{
+  return fetch(`${url}/${suffix}`,{
     method: 'POST',
     headers: {
       'Accept': 'application/json',

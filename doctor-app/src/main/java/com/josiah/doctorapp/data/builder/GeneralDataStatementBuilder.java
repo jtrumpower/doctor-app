@@ -8,9 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+@Slf4j
 public class GeneralDataStatementBuilder {
   private static final String SELECT_STATEMENT = "SELECT * FROM general_data";
   private static final String SELECT_COUNT_STATEMENT = "SELECT COUNT(*) FROM general_data";
@@ -63,6 +65,8 @@ public class GeneralDataStatementBuilder {
       }
       sBuilder.append(String.format(LIMIT_STATEMENT, pageable.getPageSize(), pageable.getOffset()));
     }
+
+    log.info(sBuilder.toString());
     PreparedStatement statement = connection.prepareStatement(sBuilder.toString());
 
     if (!where.isEmpty()) {

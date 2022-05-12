@@ -1,8 +1,7 @@
 package com.josiah.doctorapp.service;
 
-import com.josiah.doctorapp.controller.model.request.SearchRequest;
 import com.josiah.doctorapp.controller.model.request.SearchRequestEnum;
-import com.josiah.doctorapp.controller.model.response.SearchResponse;
+import com.josiah.doctorapp.controller.model.response.PagedSearchResponse;
 import com.josiah.doctorapp.data.entity.GeneralEntity;
 import com.josiah.doctorapp.data.repository.GeneralRepository;
 import com.josiah.doctorapp.service.enums.RowTypeEnum;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,11 +26,11 @@ public class SearchServiceImpl implements SearchService<SearchRequestEnum> {
   private final GeneralRowMapper rowMapper;
   private final SortMapper sortMapper;
 
-  public SearchResponse search(SearchRequestEnum params) {
+  public PagedSearchResponse pagedSearch(SearchRequestEnum params) {
 
     Page<GeneralEntity> pageResults = getResults(params);
 
-    return SearchResponse.builder()
+    return PagedSearchResponse.builder()
         .totalPages(pageResults.getTotalPages())
         .totalResults(pageResults.getTotalElements())
         .results(pageResults.getContent()
@@ -40,6 +38,11 @@ public class SearchServiceImpl implements SearchService<SearchRequestEnum> {
             .map(rowMapper::mapGeneralRowToEntity)
             .collect(Collectors.toList()))
         .build();
+  }
+
+  @Override
+  public PagedSearchResponse search(SearchRequestEnum params) {
+    return null;
   }
 
   private Page<GeneralEntity> getResults(SearchRequestEnum params) {

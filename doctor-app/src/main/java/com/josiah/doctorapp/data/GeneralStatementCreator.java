@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
+import org.apache.cxf.common.util.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,8 +26,10 @@ public class GeneralStatementCreator implements PreparedStatementCreator {
 
     GeneralDataStatementBuilder builder = new GeneralDataStatementBuilder();
 
-    Arrays.stream(request.getColumns().split("\\|"))
-        .forEach(column -> builder.where(column, request.getValue()));
+    if (!StringUtils.isEmpty(request.getColumns()) && !StringUtils.isEmpty(request.getValue())) {
+      Arrays.stream(request.getColumns().split("\\|"))
+          .forEach(column -> builder.where(column, request.getValue()));
+    }
 
     return builder
         .pageable(pageable)

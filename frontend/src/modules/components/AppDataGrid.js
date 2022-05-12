@@ -3,7 +3,7 @@ import {DataGrid} from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 import {DataGridColumnDefinition} from './model/DataGridColumnDefinition';
 
-const AppDataGrid = ({ results, page, pageSize, rowCount, onSortChange, onPageChange, onPageSizeChange }) => {
+const AppDataGrid = ({ results, page, pageSize, rowCount, loading, onSortChange, onPageChange, onPageSizeChange }) => {
   const [rows, setRows] = useState([]);
   const [rowCountState, setRowCountState] = React.useState(rowCount);
 
@@ -28,6 +28,7 @@ const AppDataGrid = ({ results, page, pageSize, rowCount, onSortChange, onPageCh
   return (
       <Box height={700} marginTop={3}>
         <DataGrid
+            loading={loading}
             rowCount={rowCountState}
             page={page}
             pageSize={pageSize}
