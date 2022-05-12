@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 @Component
-public class FreshLoadJob extends Job<FreshLoadDataParam> {
+public class DeltaLoadJob extends Job<FreshLoadDataParam> {
 
   private final FreshDataService dataService;
 
-  public FreshLoadJob(LockRepository lockRepository,
+  public DeltaLoadJob(LockRepository lockRepository,
       JobRepository jobRepository, FreshDataService dataService) {
     super(lockRepository, jobRepository);
     this.dataService = dataService;
@@ -35,8 +35,8 @@ public class FreshLoadJob extends Job<FreshLoadDataParam> {
   protected JobEntity insertJob(FreshLoadDataParam params) {
     return jobRepository.save(
         JobEntity.builder()
-            .name("Fresh data load")
-            .description(String.format("Load fresh data: %s", params.toString()))
+            .name("Delta data load")
+            .description(String.format("Perform delta on data: %s", params.toString()))
             .build());
   }
 

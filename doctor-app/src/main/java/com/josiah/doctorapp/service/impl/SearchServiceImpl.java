@@ -1,10 +1,11 @@
-package com.josiah.doctorapp.service;
+package com.josiah.doctorapp.service.impl;
 
 import com.josiah.doctorapp.controller.model.request.SearchRequestEnum;
 import com.josiah.doctorapp.controller.model.response.PagedSearchResponse;
 import com.josiah.doctorapp.controller.model.response.SearchResponse;
 import com.josiah.doctorapp.data.entity.GeneralEntity;
 import com.josiah.doctorapp.data.repository.GeneralRepository;
+import com.josiah.doctorapp.service.SearchService;
 import com.josiah.doctorapp.service.enums.RowTypeEnum;
 import com.josiah.doctorapp.service.mapper.GeneralRowMapper;
 import com.josiah.doctorapp.service.mapper.SortMapper;

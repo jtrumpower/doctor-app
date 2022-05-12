@@ -1,4 +1,4 @@
-package com.josiah.doctorapp.service;
+package com.josiah.doctorapp.service.impl;
 
 import com.josiah.doctorapp.controller.model.request.SearchRequestJdbc;
 import com.josiah.doctorapp.controller.model.response.PagedSearchResponse;
@@ -6,6 +6,7 @@ import com.josiah.doctorapp.controller.model.response.SearchResponse;
 import com.josiah.doctorapp.data.GeneralStatementCreator;
 import com.josiah.doctorapp.data.rowmapper.CountRowMapper;
 import com.josiah.doctorapp.helper.PageableHelper;
+import com.josiah.doctorapp.service.SearchService;
 import com.josiah.doctorapp.service.mapper.SortMapper;
 import com.josiah.doctorapp.service.model.GeneralRow;
 import java.util.Arrays;

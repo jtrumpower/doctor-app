@@ -50,4 +50,8 @@ public class FileHelper {
       log.error("Failed to delete directory: {}", file.getPath(), e);
     }
   }
+
+  public void delete(String file) {
+    delete(new File(file));
+  }
 }

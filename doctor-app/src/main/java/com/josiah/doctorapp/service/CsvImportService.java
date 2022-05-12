@@ -1,19 +1,9 @@
 package com.josiah.doctorapp.service;
 
-import com.josiah.doctorapp.api.MetastoreApi;
-import com.josiah.doctorapp.api.model.request.MetastoreRequest;
-import com.josiah.doctorapp.api.model.response.Distribution;
-import com.josiah.doctorapp.api.model.response.DistributionData;
-import com.josiah.doctorapp.api.model.response.MetastoreResponse;
-import com.josiah.doctorapp.config.properties.CmsProperties;
-import com.josiah.doctorapp.helper.DownloadHelper;
-import com.josiah.doctorapp.helper.FileHelper;
-import com.josiah.doctorapp.job.model.FreshLoadDataParam;
+import com.josiah.doctorapp.job.model.LoadDataParam;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,59 +15,25 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 @Slf4j
-@Service
+@Component
 @RequiredArgsConstructor
-public class FreshDataService implements DataService<FreshLoadDataParam> {
+public class CsvImportService {
   private static final int BATCH_SIZE = 1000;
   private static final String QUESTION_MARK = "?";
   private static final String COLUMNS = "{COLUMNS}";
   private static final String VALUES = "{VALUES}";
   private static final String INSERT_STATEMENT = String.format("INSERT INTO general_data(%s) VALUES (%s)", COLUMNS, VALUES);
-  private static final String FILE_PATH = "./data.csv";
 
-  private final DownloadHelper downloadHelper;
-  private final MetastoreApi metastoreApi;
-  private final FileHelper fileHelper;
-  private final CmsProperties properties;
   private final DataSource dataSource;
 
-  @Override
-  public void process(FreshLoadDataParam param) {
-    try {
-      if (param.isGetNewFile()) {
-        fileHelper.delete(new File(FILE_PATH));
-        downloadFile();
-      }
-
-      FileInputStream inputStream = fileHelper.getFileInputStream(fileHelper.getFile(FILE_PATH));
-
-      initiate(inputStream, param);
-    } catch (IOException | SQLException e) {
-      log.error("Failed to process CSV", e);
-    }
-  }
-
-  private void downloadFile() throws IOException {
-    MetastoreResponse metaResponse = metastoreApi.getMetastoreItems(
-        MetastoreRequest.builder()
-            .id(properties.getMetastoreId())
-            .build());
-
-    InputStream stream = downloadHelper.streamFile(downloadHelper.getDownloadUrl(metaResponse));
-    fileHelper.writeFile(stream, FILE_PATH);
-  }
-
-
-  private void initiate(InputStream stream, FreshLoadDataParam param) throws SQLException {
+  public void stream(InputStream stream, LoadDataParam param) throws SQLException {
     LocalDateTime start = LocalDateTime.now();
     Connection conn = dataSource.getConnection();
     InputStreamReader sReader = new InputStreamReader(stream, StandardCharsets.UTF_8);
@@ -97,7 +53,7 @@ public class FreshDataService implements DataService<FreshLoadDataParam> {
     }
   }
 
-  private void loadData(PreparedStatement statement, CSVReader reader, FreshLoadDataParam param) throws CsvValidationException, IOException, SQLException {
+  private void loadData(PreparedStatement statement, CSVReader reader, LoadDataParam param) throws CsvValidationException, IOException, SQLException {
     String[] data;
     // CSV has validation error around line 8.5M.
     // To avoid error short circuit surround read with try in indefinite loop
@@ -153,5 +109,4 @@ public class FreshDataService implements DataService<FreshLoadDataParam> {
                 : header)
         .collect(Collectors.toList());
   }
-
 }

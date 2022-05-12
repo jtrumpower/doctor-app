@@ -12,11 +12,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.server.ResponseStatusException;
 
 @RequiredArgsConstructor
 public abstract class Job<T> {
