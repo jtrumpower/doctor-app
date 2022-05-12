@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "general_data",
     indexes = {
-        @Index(name = "record_number_idx", columnList = "record_number", unique = true),
+        @Index(name = "record_id_idx", columnList = "record_id", unique = true),
         @Index(name = "change_type_idx", columnList = "change_type"),
         @Index(name = "nature_idx", columnList = "nature_of_payment_or_transfer_of_value"),
         @Index(name = "form_idx", columnList = "form_of_payment_or_transfer_of_value"),
@@ -28,10 +28,10 @@ import lombok.NoArgsConstructor;
         @Index(name = "primary_type_idx", columnList = "physician_primary_type"),
     })
 public class GeneralEntity {
+
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "record_number", columnDefinition = "bigint not null auto_increment")
-  private long recordNumber;
+  @Column(name = "record_id", columnDefinition = "bigint not null")
+  private long recordId;
   @Column(name = "change_type", columnDefinition = "varchar(20)")
   private String changeType;
   @Column(name = "covered_recipient_type", columnDefinition = "varchar(50)")
@@ -122,8 +122,6 @@ public class GeneralEntity {
   private String contextualInformation;
   @Column(name = "delay_in_publication_indicator", columnDefinition = "varchar(3)")
   private String delayInPublicationIndicator;
-  @Column(name = "record_id", columnDefinition = "bigint")
-  private long recordId;
   @Column(name = "dispute_status_for_publication", columnDefinition = "varchar(3)")
   private String disputeStatusForPublication;
   @Column(name = "product_indicator", columnDefinition = "varchar(15)")

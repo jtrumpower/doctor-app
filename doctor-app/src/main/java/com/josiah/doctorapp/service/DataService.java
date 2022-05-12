@@ -2,12 +2,17 @@ package com.josiah.doctorapp.service;
 
 import com.josiah.doctorapp.api.MetastoreApi;
 import com.josiah.doctorapp.api.model.request.MetastoreRequest;
+import com.josiah.doctorapp.api.model.response.Distribution;
+import com.josiah.doctorapp.api.model.response.DistributionData;
 import com.josiah.doctorapp.api.model.response.MetastoreResponse;
 import com.josiah.doctorapp.config.properties.CmsProperties;
 import com.josiah.doctorapp.helper.DownloadHelper;
 import com.josiah.doctorapp.helper.FileHelper;
 import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +41,7 @@ public class DataService {
   private static final String COLUMNS = "{COLUMNS}";
   private static final String VALUES = "{VALUES}";
   private static final String INSERT_STATEMENT = String.format("INSERT INTO general_data(%s) VALUES (%s)", COLUMNS, VALUES);
+  private static final String FILE_PATH = "./data.csv";
 
   private final DownloadHelper downloadHelper;
   private final MetastoreApi metastoreApi;
@@ -42,23 +49,24 @@ public class DataService {
   private final CmsProperties properties;
   private final DataSource dataSource;
 
-  @Async
-  public void loadData() {
+  public File downloadFile() throws IOException {
     MetastoreResponse metaResponse = metastoreApi.getMetastoreItems(
         MetastoreRequest.builder()
             .id(properties.getMetastoreId())
             .build());
 
-    String downloadUrl = metaResponse.getDistribution().get(0).getData().getDownloadURL();
+    InputStream stream = downloadHelper.streamFile(downloadHelper.getDownloadUrl(metaResponse));
+    return fileHelper.writeFile(stream, FILE_PATH);
+  }
 
+  @Async
+  public void loadData() {
     try {
-      InputStream stream = downloadHelper.streamFile(downloadUrl);
-      //fileHelper.writeFile(stream, "./data.csv");
-      fileHelper.getFileInputStream("./data.csv");
+      FileInputStream inputStream = fileHelper.getFileInputStream(downloadFile());
 
-      process(stream);
+      process(inputStream);
     } catch (IOException | SQLException e) {
-      log.error("Failed to get CSV: {}", downloadUrl, e);
+      log.error("Failed to process CSV", e);
     }
   }
 
@@ -69,7 +77,10 @@ public class DataService {
         CSVReader reader = new CSVReader(sReader)) {
 
       List<String> headers = getHeaders(reader.readNext());
-      processBatch(headers, conn, reader);
+
+      try (PreparedStatement statement = getStatement(conn, headers)) {
+        processBatch(statement, reader);
+      }
     } catch (IOException | SQLException | CsvValidationException e) {
       e.printStackTrace();
     } finally {
@@ -78,12 +89,15 @@ public class DataService {
     }
   }
 
-  private void processBatch(List<String> headers, Connection conn, CSVReader reader) throws CsvValidationException, IOException, SQLException {
+  private void processBatch(PreparedStatement statement, CSVReader reader) throws CsvValidationException, IOException, SQLException {
     long lines = 0;
     String[] data;
-    try (PreparedStatement statement = getStatement(conn, headers)) {
-      while ((data = reader.readNext()) != null && lines < 5000) {
-        try {
+    // CSV has validation error around line 8.5M.
+    // To avoid error short circuit surround read with try in indefinite loop
+    for(;;) {
+      try {
+        data = reader.readNext();
+        if (data != null && lines < 50000) {
           for (int i = 1; i <= data.length; i++) {
             statement.setObject(i, data[i - 1]);
           }
@@ -93,13 +107,14 @@ public class DataService {
             log.info("Execute batch: {}", lines);
             statement.executeBatch();
           }
-        } catch (SQLException e) {
-          log.error("Failed to execute batch {}", lines, e);
+        } else {
+          break;
         }
+      } catch(CsvException | SQLException e){
+        log.error("Failed to execute batch {}", lines, e);
       }
-
-      statement.executeBatch();
     }
+    statement.executeBatch();
   }
 
   private PreparedStatement getStatement(Connection conn, List<String> headers) throws SQLException {

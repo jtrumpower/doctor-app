@@ -14,6 +14,7 @@ const SearchPage = () => {
   }, []);
 
   const handleChange = (e) => {
+    console.log(e);
     const newItem = { ...search };
     newItem[e.target.name] = e.target.value;
     if (e.target.name === 'columns') {

@@ -4,14 +4,14 @@ import com.josiah.doctorapp.controller.model.request.SearchRequestJdbc;
 import com.josiah.doctorapp.controller.model.response.PagedSearchResponse;
 import com.josiah.doctorapp.controller.model.response.SearchResponse;
 import com.josiah.doctorapp.data.GeneralStatementCreator;
-import com.josiah.doctorapp.data.rowmapper.GeneralRowMapper;
+import com.josiah.doctorapp.data.rowmapper.CountRowMapper;
+import com.josiah.doctorapp.helper.PageableHelper;
 import com.josiah.doctorapp.service.mapper.SortMapper;
 import com.josiah.doctorapp.service.model.GeneralRow;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.cxf.common.util.StringUtils;
@@ -23,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.domain.Sort;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -31,30 +32,29 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Qualifier("searchServiceJdbc")
 public class SearchServiceJdbcImpl implements SearchService<SearchRequestJdbc> {
-  private static final String SELECT_COUNT_STATEMENT = "SELECT COUNT(*) FROM general_data";
-  private static final String ORDER_BY_STATEMENT = " ORDER BY %s";
 
   private final SortMapper sortMapper;
   private final JdbcTemplate jdbcTemplate;
+  private final PageableHelper pageHelper;
 
 
   public PagedSearchResponse pagedSearch(SearchRequestJdbc params) {
 
-    Page<GeneralRow> pageResults = getPagedResults(params);
+    Page<GeneralRow> results = getPagedResults(params);
 
     return PagedSearchResponse.builder()
-        .totalPages(pageResults.getTotalPages())
-        .totalResults(pageResults.getTotalElements())
-        .results(pageResults.getContent())
+        .totalPages(results.getTotalPages())
+        .totalResults(results.getTotalElements())
+        .results(results.getContent())
         .build();
   }
 
   public SearchResponse search(SearchRequestJdbc params) {
 
-    Slice<GeneralRow> pageResults = getSliceResults(params);
+    Slice<GeneralRow> results = getSearchResults(params);
 
     return SearchResponse.builder()
-        .results(pageResults.getContent())
+        .results(results.getContent())
         .build();
   }
 
@@ -62,19 +62,31 @@ public class SearchServiceJdbcImpl implements SearchService<SearchRequestJdbc> {
     Pageable pageable = getPageable(params);
 
     List<GeneralRow> rows = jdbcTemplate.query(
-        new GeneralStatementCreator(params, sortMapper),
-        new GeneralRowMapper());
-    Integer count = getCount(params, pageable);
+        GeneralStatementCreator.builder()
+            .request(params)
+            .pageable(pageHelper.createPageable(params))
+            .build(),
+        new BeanPropertyRowMapper<>(GeneralRow.class));
+    List<Integer> count = jdbcTemplate.query(
+        GeneralStatementCreator.builder()
+            .request(params)
+            .count(true)
+            .build(),
+        new CountRowMapper());
 
-    return new PageImpl<>(rows, pageable, count);
+    return new PageImpl<>(rows, pageable, count.get(0));
   }
 
-  private Slice<GeneralRow> getSliceResults(SearchRequestJdbc params) {
+  private Slice<GeneralRow> getSearchResults(SearchRequestJdbc params) {
     Pageable pageable = getPageable(params);
 
     List<GeneralRow> rows = jdbcTemplate.query(
-        new GeneralStatementCreator(params, sortMapper),
-        new GeneralRowMapper());
+        GeneralStatementCreator.builder()
+            .request(params)
+            .pageable(pageHelper.createPageable(params))
+            .distinct(true)
+            .build(),
+        new BeanPropertyRowMapper<>(GeneralRow.class));
 
     return new SliceImpl<>(rows, pageable, false);
   }
@@ -82,40 +94,5 @@ public class SearchServiceJdbcImpl implements SearchService<SearchRequestJdbc> {
   private Pageable getPageable(SearchRequestJdbc params) {
     return PageRequest.of(params.getPage(), params.getPageSize(),
         Sort.by(sortMapper.mapSortingToSort(params.getSorting())));
-  }
-
-  private Integer getCount(SearchRequestJdbc params, Pageable pageable) {
-    StringBuilder sBuilder = new StringBuilder(SELECT_COUNT_STATEMENT);
-    getCountWhere(params).ifPresent(sBuilder::append);
-    getCountOrder(pageable).ifPresent(sBuilder::append);
-
-    log.info(sBuilder.toString());
-    return jdbcTemplate.queryForObject(sBuilder.toString(), Integer.class);
-  }
-
-
-  private Optional<String> getCountWhere(SearchRequestJdbc params) {
-    if (!StringUtils.isEmpty(params.getColumns()) && !StringUtils.isEmpty(params.getValue())) {
-      return Optional.of(" where " +
-          Arrays.stream(params.getColumns().split("\\|"))
-              .map(val -> String.format("%s like '%%%s%%'", val, params.getValue()))
-              .collect(Collectors.joining(" or ")));
-    }
-
-    return Optional.empty();
-  }
-
-  private Optional<String> getCountOrder(Pageable pageable) {
-    if (pageable.getSort().isSorted()) {
-      return Optional.of(
-          String.format(ORDER_BY_STATEMENT,
-              pageable.getSort()
-                  .stream()
-                  .map(order ->
-                      String.format("%s %s", order.getProperty(), order.getDirection()))
-                  .collect(Collectors.joining(","))));
-    }
-
-    return Optional.empty();
   }
 }

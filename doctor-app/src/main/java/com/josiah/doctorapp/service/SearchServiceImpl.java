@@ -36,7 +36,7 @@ public class SearchServiceImpl implements SearchService<SearchRequestEnum> {
         .totalResults(pageResults.getTotalElements())
         .results(pageResults.getContent()
             .stream()
-            .map(rowMapper::mapGeneralRowToEntity)
+            .map(rowMapper::mapEntityToGeneralRow)
             .collect(Collectors.toList()))
         .build();
   }

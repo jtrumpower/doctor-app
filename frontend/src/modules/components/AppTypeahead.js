@@ -40,12 +40,14 @@ const AppTypeahead = ({ search, handleChange }) => {
       <Autocomplete
           loading={loading}
           options={results}
+          clearOnBlur={false}
           getOptionLabel={option => getLabel(option) }
           renderOption={(props, option) => (
               <li {...props}>
                 {getLabel(option)}
               </li>
           )}
+          onSelect={handleChange}
           renderInput={(params) =>
             <TextField
                 {...params}

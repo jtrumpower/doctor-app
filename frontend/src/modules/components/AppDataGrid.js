@@ -42,6 +42,7 @@ const AppDataGrid = ({ results, page, pageSize, rowCount, loading, onSortChange,
             onSortModelChange={onSortChange}
             onPageChange={onPageChange}
             onPageSizeChange={onPageSizeChange}
+            disableSelectionOnClick={true}
             rows={rows} />
       </Box>
   )

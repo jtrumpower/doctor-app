@@ -1,32 +1,35 @@
 package com.josiah.doctorapp.controller;
 
+import com.josiah.doctorapp.controller.model.request.SearchRequestJdbc;
 import com.josiah.doctorapp.service.DownloadService;
+import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @RestController
-@RequestMapping("/data")
 @RequiredArgsConstructor
 public class DownloadController {
 
   private final DownloadService downloadService;
 
   @GetMapping(
-      value = "/all",
+      value = "/download",
       produces = "application/octet-stream"
   )
-  public ResponseEntity<StreamingResponseBody> getAllData() {
-    StreamingResponseBody stream = downloadService::getAllData;
+  public void getAllData(@RequestParam String value, @RequestParam String columns, HttpServletResponse response) throws IOException {
 
-    return ResponseEntity.ok()
-        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=results.xls")
-        .contentType(MediaType.APPLICATION_OCTET_STREAM)
-        .body(stream);
+    response.setContentType("text/csv");
+    response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=results.xls");
+
+    downloadService.printResults(
+        SearchRequestJdbc.builder()
+            .value(value)
+            .columns(columns)
+            .build(),
+        response.getWriter());
   }
 }

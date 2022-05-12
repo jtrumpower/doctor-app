@@ -7,6 +7,6 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface GeneralRowMapper {
 
-  GeneralEntity mapGeneralRowToEntity(GeneralRow generalRow);
-  GeneralRow mapGeneralRowToEntity(GeneralEntity generalEntity);
+  GeneralEntity mapEntityToGeneralRow(GeneralRow generalRow);
+  GeneralRow mapEntityToGeneralRow(GeneralEntity generalEntity);
 }

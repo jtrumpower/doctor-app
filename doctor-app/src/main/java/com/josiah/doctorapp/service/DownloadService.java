@@ -1,32 +1,41 @@
 package com.josiah.doctorapp.service;
 
-import com.josiah.doctorapp.data.entity.GeneralEntity;
-import com.josiah.doctorapp.data.repository.GeneralRepository;
-import com.josiah.doctorapp.helper.CsvHelper;
-import com.josiah.doctorapp.service.mapper.GeneralRowMapper;
-import java.io.OutputStream;
+import com.josiah.doctorapp.controller.model.request.SearchRequestJdbc;
+import com.josiah.doctorapp.data.GeneralStatementCreator;
+import com.josiah.doctorapp.data.rowmapper.GeneralRowMapper;
+import com.josiah.doctorapp.service.model.GeneralRow;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+import java.io.PrintWriter;
 import java.util.stream.Stream;
-import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DownloadService {
 
-  private final GeneralRepository generalRepo;
-  private final EntityManager entityManager;
-  private final GeneralRowMapper mapper;
-  private final CsvHelper helper;
+  private final JdbcTemplate jdbcTemplate;
 
-  @Transactional(readOnly = true)
-  public void getAllData( OutputStream outputStream) {
-    try (Stream<GeneralEntity> entries = generalRepo.getAll()) {
-      entries.forEach(entry -> {
-        helper.writeToOutput(mapper.mapGeneralRowToEntity(entry), outputStream);
-        entityManager.detach(entry);
-      });
-    }
+  public void printResults(SearchRequestJdbc searchRequestJdbc, PrintWriter writer) {
+    StatefulBeanToCsv<GeneralRow> sbc = new StatefulBeanToCsvBuilder<GeneralRow>(writer).build();
+    Stream<GeneralRow> entries = jdbcTemplate.queryForStream(
+        GeneralStatementCreator.builder()
+            .request(searchRequestJdbc)
+            .build(),
+        new GeneralRowMapper());
+
+    entries.forEach(row -> {
+      try {
+        sbc.write(row);
+      } catch (CsvRequiredFieldEmptyException | CsvDataTypeMismatchException e) {
+        log.error("CSV Write error", e);
+      }
+    });
   }
 }

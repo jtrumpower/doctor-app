@@ -31,7 +31,7 @@ export const DataGridColumnDefinition = [
   { field: COLUMNS.applicableManufacturerOrGpoPaymentName, headerName: 'Manufacturer or GPO Payment Name', width: 150 },
   { field: COLUMNS.applicableManufacturerOrGpoPaymentState, headerName: 'Manufacturer or GPO Payment State', width: 150 },
   { field: COLUMNS.applicableManufacturerOrGpoPaymentCountry, headerName: 'Manufacturer or GPO Payment Country', width: 150 },
-  { field: COLUMNS.totalAmountOfPaymentUsDollars, headerName: 'Total Dollar Amount', width: 150 },
+  { field: COLUMNS.totalAmountOfPaymentUsDollars, headerName: 'Total Dollar Amount', width: 150, valueGetter: (params) => `$${params.row[COLUMNS.totalAmountOfPaymentUsDollars].toFixed(2)}` },
   { field: COLUMNS.dateOfPayment, headerName: 'Date of Payment', width: 150 },
   { field: COLUMNS.numberOfPaymentsInTotalAmount, headerName: 'Number of Payments for Total', width: 150 },
   { field: COLUMNS.formOfPaymentOrTransferOfValue, headerName: 'Form of Payment', width: 150 },
