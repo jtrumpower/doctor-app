@@ -82,7 +82,7 @@ public class GeneralEntity {
   private String physicianLicenseStateCode4;
   @Column(name = "physician_license_state_code5", columnDefinition = "varchar(5)")
   private String physicianLicenseStateCode5;
-  @Column(name = "submitting_applicable_manufacturer_or_applicable_gpo_name", columnDefinition = "varchar(50)")
+  @Column(name = "submitting_applicable_manufacturer_or_applicable_gpo_name", columnDefinition = "varchar(255)")
   private String submittingApplicableManufacturerOrApplicableGpoName;
   @Column(name = "applicable_manufacturer_or_applicable_gpo_making_payment_id", columnDefinition = "varchar(255)")
   private long applicableManufacturerOrApplicableGpoMakingPaymentId;
@@ -126,35 +126,35 @@ public class GeneralEntity {
   private String disputeStatusForPublication;
   @Column(name = "product_indicator", columnDefinition = "varchar(15)")
   private String productIndicator;
-  @Column(name = "name_of_associated_covered_drug_or_biological1", columnDefinition = "varchar(50)")
+  @Column(name = "name_of_associated_covered_drug_or_biological1", columnDefinition = "varchar(255)")
   private String nameOfAssociatedCoveredDrugOrBiological1;
-  @Column(name = "name_of_associated_covered_drug_or_biological2", columnDefinition = "varchar(50)")
+  @Column(name = "name_of_associated_covered_drug_or_biological2", columnDefinition = "varchar(255)")
   private String nameOfAssociatedCoveredDrugOrBiological2;
-  @Column(name = "name_of_associated_covered_drug_or_biological3", columnDefinition = "varchar(50)")
+  @Column(name = "name_of_associated_covered_drug_or_biological3", columnDefinition = "varchar(255)")
   private String nameOfAssociatedCoveredDrugOrBiological3;
-  @Column(name = "name_of_associated_covered_drug_or_biological4", columnDefinition = "varchar(50)")
+  @Column(name = "name_of_associated_covered_drug_or_biological4", columnDefinition = "varchar(255)")
   private String nameOfAssociatedCoveredDrugOrBiological4;
-  @Column(name = "name_of_associated_covered_drug_or_biological5", columnDefinition = "varchar(50)")
+  @Column(name = "name_of_associated_covered_drug_or_biological5", columnDefinition = "varchar(255)")
   private String nameOfAssociatedCoveredDrugOrBiological5;
-  @Column(name = "ndc_of_associated_covered_drug_or_biological1", columnDefinition = "varchar(50)")
+  @Column(name = "ndc_of_associated_covered_drug_or_biological1", columnDefinition = "varchar(255)")
   private String ndcOfAssociatedCoveredDrugOrBiological1;
-  @Column(name = "ndc_of_associated_covered_drug_or_biological2", columnDefinition = "varchar(50)")
+  @Column(name = "ndc_of_associated_covered_drug_or_biological2", columnDefinition = "varchar(255)")
   private String ndcOfAssociatedCoveredDrugOrBiological2;
-  @Column(name = "ndc_of_associated_covered_drug_or_biological3", columnDefinition = "varchar(50)")
+  @Column(name = "ndc_of_associated_covered_drug_or_biological3", columnDefinition = "varchar(255)")
   private String ndcOfAssociatedCoveredDrugOrBiological3;
-  @Column(name = "ndc_of_associated_covered_drug_or_biological4", columnDefinition = "varchar(50)")
+  @Column(name = "ndc_of_associated_covered_drug_or_biological4", columnDefinition = "varchar(255)")
   private String ndcOfAssociatedCoveredDrugOrBiological4;
-  @Column(name = "ndc_of_associated_covered_drug_or_biological5", columnDefinition = "varchar(50)")
+  @Column(name = "ndc_of_associated_covered_drug_or_biological5", columnDefinition = "varchar(255)")
   private String ndcOfAssociatedCoveredDrugOrBiological5;
-  @Column(name = "name_of_associated_covered_device_or_medical_supply1", columnDefinition = "varchar(100)")
+  @Column(name = "name_of_associated_covered_device_or_medical_supply1", columnDefinition = "varchar(255)")
   private String nameOfAssociatedCoveredDeviceOrMedicalSupply1;
-  @Column(name = "name_of_associated_covered_device_or_medical_supply2", columnDefinition = "varchar(100)")
+  @Column(name = "name_of_associated_covered_device_or_medical_supply2", columnDefinition = "varchar(255)")
   private String nameOfAssociatedCoveredDeviceOrMedicalSupply2;
-  @Column(name = "name_of_associated_covered_device_or_medical_supply3", columnDefinition = "varchar(100)")
+  @Column(name = "name_of_associated_covered_device_or_medical_supply3", columnDefinition = "varchar(255)")
   private String nameOfAssociatedCoveredDeviceOrMedicalSupply3;
-  @Column(name = "name_of_associated_covered_device_or_medical_supply4", columnDefinition = "varchar(100)")
+  @Column(name = "name_of_associated_covered_device_or_medical_supply4", columnDefinition = "varchar(255)")
   private String nameOfAssociatedCoveredDeviceOrMedicalSupply4;
-  @Column(name = "name_of_associated_covered_device_or_medical_supply5", columnDefinition = "varchar(100)")
+  @Column(name = "name_of_associated_covered_device_or_medical_supply5", columnDefinition = "varchar(255)")
   private String nameOfAssociatedCoveredDeviceOrMedicalSupply5;
   @Column(name = "program_year", columnDefinition = "varchar(4)")
   private String programYear;

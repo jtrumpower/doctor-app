@@ -45,10 +45,18 @@ public class CsvImportService {
 
     try (streamReader;bufferedReader;conn) {
       List<String> headers = getHeaders(bufferedReader.readLine());
+      conn.setAutoCommit(false);
 
       try (PreparedStatement statement = getStatement(conn, headers)) {
-        conn.createStatement().execute("truncate general_data");
-        loadData(statement, bufferedReader, param);
+        statement.execute("truncate general_data");
+
+        loadData(statement, conn, bufferedReader, param);
+
+        conn.commit();
+        conn.setAutoCommit(true);
+      } catch (Exception e) {
+        conn.rollback();
+        throw e;
       }
     } catch (IOException | SQLException e) {
       e.printStackTrace();
@@ -57,7 +65,8 @@ public class CsvImportService {
     }
   }
 
-  private void loadData(PreparedStatement statement, BufferedReader reader, LoadDataParam param) throws SQLException {
+  private void loadData(PreparedStatement statement, Connection conn,
+      BufferedReader reader, LoadDataParam param) throws SQLException {
     String[] data;
     // CSV has validation error around line 8.5M.
     // To avoid error short circuit surround read with try in indefinite loop
@@ -67,7 +76,7 @@ public class CsvImportService {
         data = csvParser.parseLine(reader.readLine());
         if (data != null) {
 
-          addBatchAndExecute(statement, data, lines);
+          addBatchAndExecute(statement, conn, data, lines);
 
           if (param.getNumRows() > 0 && param.getNumRows() == lines) {
             break;
@@ -82,16 +91,18 @@ public class CsvImportService {
     statement.executeBatch();
   }
 
-  private void addBatchAndExecute(PreparedStatement statement, String[] data, long lines)
+  private void addBatchAndExecute(PreparedStatement statement, Connection conn,
+      String[] data, long lines)
       throws SQLException {
     for (int i = 1; i <= data.length; i++) {
       statement.setObject(i, data[i - 1]);
     }
     statement.addBatch();
 
-    if (++lines % BATCH_SIZE == 0) {
+    if (lines % BATCH_SIZE == 0) {
       log.info("Execute batch: {}", lines);
       statement.executeBatch();
+      conn.commit();
     }
   }
 
