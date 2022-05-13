@@ -177,7 +177,7 @@ public class GeneralRow {
   private String thirdPartyPaymentRecipientIndicator;
 
   @JsonProperty(Column.NAME_OF_ENTITY_RECEIVING_PAYMENT)
-  @CsvBindByName(column = Column.NAME_OF_ENTITY_RECEIVING_PAYMENT)
+  @CsvBindByName(column = "name_of_third_party_entity_receiving_payment_or_transfer_of_value")
   private String nameOfThirdPartyEntityReceivingPaymentOrTransferOfCcfc;
 
   @JsonProperty(Column.CHARITY_INDICATOR)

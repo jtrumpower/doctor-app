@@ -25,6 +25,7 @@ public class GeneralStatementCreator implements PreparedStatementCreator {
   private final Pageable pageable;
   private final boolean distinct;
   private final boolean count;
+  private final boolean oneByOne;
 
   @Override
   public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
@@ -41,6 +42,7 @@ public class GeneralStatementCreator implements PreparedStatementCreator {
         .distinct(distinct)
         .count(count)
         .pageable(pageable)
+        .oneByOne(oneByOne)
         .withConnection(con)
         .build();
   }

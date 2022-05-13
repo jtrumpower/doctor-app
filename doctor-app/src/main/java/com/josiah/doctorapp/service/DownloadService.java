@@ -27,6 +27,7 @@ public class DownloadService {
     Stream<GeneralRow> entries = jdbcTemplate.queryForStream(
         GeneralStatementCreator.builder()
             .request(searchRequestJdbc)
+            .oneByOne(true)
             .build(),
         new GeneralRowMapper());
 

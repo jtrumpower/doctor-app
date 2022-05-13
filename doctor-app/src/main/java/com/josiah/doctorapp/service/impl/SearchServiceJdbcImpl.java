@@ -52,14 +52,14 @@ public class SearchServiceJdbcImpl implements SearchService<SearchRequestJdbc> {
 
   public SearchResponse search(SearchRequestJdbc params) {
 
-    Slice<GeneralRow> results = getSearchResults(params);
+    Slice<GeneralRow> results = getSearchResults(params, true);
 
     return SearchResponse.builder()
         .results(results.getContent())
         .build();
   }
 
-  private Page<GeneralRow> getPagedResults(SearchRequestJdbc params) {
+  public Page<GeneralRow> getPagedResults(SearchRequestJdbc params) {
     Pageable pageable = getPageable(params);
 
     List<GeneralRow> rows = jdbcTemplate.query(
@@ -78,14 +78,14 @@ public class SearchServiceJdbcImpl implements SearchService<SearchRequestJdbc> {
     return new PageImpl<>(rows, pageable, count.get(0));
   }
 
-  private Slice<GeneralRow> getSearchResults(SearchRequestJdbc params) {
+  public Slice<GeneralRow> getSearchResults(SearchRequestJdbc params, boolean distinct) {
     Pageable pageable = getPageable(params);
 
     List<GeneralRow> rows = jdbcTemplate.query(
         GeneralStatementCreator.builder()
             .request(params)
             .pageable(pageHelper.createPageable(params))
-            .distinct(true)
+            .distinct(distinct)
             .build(),
         new BeanPropertyRowMapper<>(GeneralRow.class));
 

@@ -2,6 +2,7 @@ package com.josiah.doctorapp.data.builder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ public class GeneralDataStatementBuilder {
   public Connection connection;
   private boolean count;
   private boolean distinct;
+  private boolean oneByOne;
 
   public GeneralDataStatementBuilder where(String column, String value) {
     where.put(column, value);
@@ -56,6 +58,12 @@ public class GeneralDataStatementBuilder {
     return this;
   }
 
+  public GeneralDataStatementBuilder oneByOne(boolean oneByOne) {
+    this.oneByOne = oneByOne;
+
+    return this;
+  }
+
   public PreparedStatement build() throws SQLException {
     StringBuilder sBuilder = new StringBuilder();
     sBuilder.append(buildSelect());
@@ -70,7 +78,14 @@ public class GeneralDataStatementBuilder {
       sBuilder.append(String.format(LIMIT_STATEMENT, pageable.getPageSize(), pageable.getOffset()));
     }
 
-    PreparedStatement statement = connection.prepareStatement(sBuilder.toString());
+    log.info(sBuilder.toString());
+    PreparedStatement statement;
+    if (oneByOne) {
+      statement = connection.prepareStatement(sBuilder.toString(), ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+      statement.setFetchSize(Integer.MIN_VALUE);
+    } else {
+      statement = connection.prepareStatement(sBuilder.toString());
+    }
 
     if (!where.isEmpty()) {
       for (int i = 0; i < where.values().size(); i++) {

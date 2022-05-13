@@ -44,11 +44,7 @@ public class FileHelper {
   }
 
   public void delete(File file) {
-    try {
-      FileUtils.deleteDirectory(file);
-    } catch (IOException e) {
-      log.error("Failed to delete directory: {}", file.getPath(), e);
-    }
+    file.delete();
   }
 
   public void delete(String file) {

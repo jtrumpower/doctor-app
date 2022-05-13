@@ -37,7 +37,7 @@ public class GeneralEntity {
   @Column(name = "covered_recipient_type", columnDefinition = "varchar(50)")
   private String coveredRecipientType;
   @Column(name = "teaching_hospital_ccn", columnDefinition = "varchar(255)")
-  private String teachingHospitalCCN;
+  private String teachingHospitalCcn;
   @Column(name = "teaching_hospital_id", columnDefinition = "varchar(255)")
   private String teachingHospitalId;
   @Column(name = "teaching_hospital_name", columnDefinition = "varchar(50)")
@@ -83,21 +83,21 @@ public class GeneralEntity {
   @Column(name = "physician_license_state_code5", columnDefinition = "varchar(5)")
   private String physicianLicenseStateCode5;
   @Column(name = "submitting_applicable_manufacturer_or_applicable_gpo_name", columnDefinition = "varchar(50)")
-  private String submittingApplicableManufacturerOrGpoName;
+  private String submittingApplicableManufacturerOrApplicableGpoName;
   @Column(name = "applicable_manufacturer_or_applicable_gpo_making_payment_id", columnDefinition = "varchar(255)")
-  private long applicableManufacturerOrGpoPaymentId;
+  private long applicableManufacturerOrApplicableGpoMakingPaymentId;
   @Column(name = "applicable_manufacturer_or_applicable_gpo_making_payment_name", columnDefinition = "varchar(100)")
-  private String applicableManufacturerOrGpoPaymentName;
+  private String applicableManufacturerOrApplicableGpoMakingPaymentName;
   @Column(name = "applicable_manufacturer_or_applicable_gpo_making_payment_state", columnDefinition = "varchar(5)")
-  private String applicableManufacturerOrGpoPaymentState;
+  private String applicableManufacturerOrApplicableGpoMakingPaymentState;
   @Column(name = "applicable_manufacturer_or_applicable_gpo_making_payment_country", columnDefinition = "varchar(50)")
-  private String applicableManufacturerOrGpoPaymentCountry;
+  private String applicableManufacturerOrApplicableGpoMakingPaymentCountry;
   @Column(name = "total_amount_of_payment_usdollars", columnDefinition = "double")
-  private double totalAmountOfPaymentUsDollars;
+  private double totalAmountOfPaymentUsdollars;
   @Column(name = "date_of_payment", columnDefinition = "varchar(15)")
   private String dateOfPayment;
   @Column(name = "number_of_payments_included_in_total_amount", columnDefinition = "int")
-  private int numberOfPaymentsInTotalAmount;
+  private int numberOfPaymentsIncludedInTotalAmount;
   @Column(name = "form_of_payment_or_transfer_of_value", columnDefinition = "varchar(255)")
   private String formOfPaymentOrTransferOfValue;
   @Column(name = "nature_of_payment_or_transfer_of_value", columnDefinition = "varchar(255)")
@@ -113,7 +113,7 @@ public class GeneralEntity {
   @Column(name = "third_party_payment_recipient_indicator", columnDefinition = "varchar(255)")
   private String thirdPartyPaymentRecipientIndicator;
   @Column(name = "name_of_third_party_entity_receiving_payment_or_transfer_of_ccfc", columnDefinition = "varchar(50)")
-  private String nameOfEntityReceivingPaymentOrTransferOfValue;
+  private String nameOfThirdPartyEntityReceivingPaymentOrTransferOfCcfc;
   @Column(name = "charity_indicator", columnDefinition = "varchar(3)")
   private String charityIndicator;
   @Column(name = "third_party_equals_covered_recipient_indicator", columnDefinition = "varchar(3)")
