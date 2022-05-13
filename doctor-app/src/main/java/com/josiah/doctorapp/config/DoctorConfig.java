@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.josiah.doctorapp.api.MetastoreApi;
 import com.josiah.doctorapp.config.properties.CmsProperties;
+import com.opencsv.CSVParser;
 import java.util.List;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DoctorConfig {
+
+  @Bean
+  public CSVParser csvParser() {
+    return new CSVParser();
+  }
 
   @Bean
   public JacksonJaxbJsonProvider jacksonJaxbJsonProvider() {

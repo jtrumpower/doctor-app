@@ -1,9 +1,12 @@
 package com.josiah.doctorapp.service;
 
 import com.josiah.doctorapp.job.model.LoadDataParam;
+import com.opencsv.CSVParser;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,34 +35,36 @@ public class CsvImportService {
   private static final String INSERT_STATEMENT = String.format("INSERT INTO general_data(%s) VALUES (%s)", COLUMNS, VALUES);
 
   private final DataSource dataSource;
+  private final CSVParser csvParser;
 
   public void stream(InputStream stream, LoadDataParam param) throws SQLException {
     LocalDateTime start = LocalDateTime.now();
     Connection conn = dataSource.getConnection();
-    InputStreamReader sReader = new InputStreamReader(stream, StandardCharsets.UTF_8);
-    CSVReader reader = new CSVReader(sReader);
+    InputStreamReader streamReader = new InputStreamReader(stream);
+    BufferedReader bufferedReader = new BufferedReader(streamReader);
 
-    try (sReader;conn;reader) {
-      List<String> headers = getHeaders(reader.readNext());
+    try (streamReader;bufferedReader;conn) {
+      List<String> headers = getHeaders(bufferedReader.readLine());
 
       try (PreparedStatement statement = getStatement(conn, headers)) {
         conn.createStatement().execute("truncate general_data");
-        loadData(statement, reader, param);
+        loadData(statement, bufferedReader, param);
       }
-    } catch (IOException | SQLException | CsvValidationException e) {
+    } catch (IOException | SQLException e) {
       e.printStackTrace();
     } finally {
       log.info("took {}", ChronoUnit.SECONDS.between(start,  LocalDateTime.now()));
     }
   }
 
-  private void loadData(PreparedStatement statement, CSVReader reader, LoadDataParam param) throws CsvValidationException, IOException, SQLException {
+  private void loadData(PreparedStatement statement, BufferedReader reader, LoadDataParam param) throws SQLException {
     String[] data;
     // CSV has validation error around line 8.5M.
     // To avoid error short circuit surround read with try in indefinite loop
+    CSVParser csvParser = new CSVParser();
     for(int lines = 1;;lines++) {
       try {
-        data = reader.readNext();
+        data = csvParser.parseLine(reader.readLine());
         if (data != null) {
 
           addBatchAndExecute(statement, data, lines);
@@ -70,7 +75,7 @@ public class CsvImportService {
         } else {
           break;
         }
-      } catch(CsvException | SQLException e){
+      } catch(SQLException | IOException e){
         log.error("Failed to execute batch {}", lines, e);
       }
     }
@@ -101,8 +106,8 @@ public class CsvImportService {
     return conn.prepareStatement(statement);
   }
 
-  private List<String> getHeaders(String[] headers) {
-    return Arrays.stream(headers)
+  private List<String> getHeaders(String headers) throws IOException {
+    return Arrays.stream(csvParser.parseLine(headers))
         .map(header ->
             header.equals("Name_of_Third_Party_Entity_Receiving_Payment_or_Transfer_of_Value")
                 ? "name_of_third_party_entity_receiving_payment_or_transfer_of_ccfc"
