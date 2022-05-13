@@ -25,6 +25,7 @@ public class GeneralDataStatementBuilder {
   private Pageable pageable;
   public Connection connection;
   private boolean count;
+  private boolean like;
   private boolean distinct;
   private boolean oneByOne;
 
@@ -42,6 +43,12 @@ public class GeneralDataStatementBuilder {
 
   public GeneralDataStatementBuilder count(boolean count) {
     this.count = count;
+
+    return this;
+  }
+
+  public GeneralDataStatementBuilder like(boolean like) {
+    this.like = like;
 
     return this;
   }
@@ -89,7 +96,8 @@ public class GeneralDataStatementBuilder {
 
     if (!where.isEmpty()) {
       for (int i = 0; i < where.values().size(); i++) {
-        statement.setObject(i+1, String.format("%%%s%%", where.values().toArray()[i]));
+        String format = like ? "%%%s%%" : "%s";
+        statement.setObject(i+1, String.format(format, where.values().toArray()[i]));
       }
     }
 
@@ -108,7 +116,7 @@ public class GeneralDataStatementBuilder {
     return " where " +
         where.keySet()
             .stream()
-            .map((key) -> String.format("%s like ?", key))
+            .map((key) -> String.format("%s %s ?", key, like ? "like" : "="))
             .collect(Collectors.joining(" or "));
   }
 

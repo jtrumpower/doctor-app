@@ -25,6 +25,7 @@ public class GeneralStatementCreator implements PreparedStatementCreator {
   private final Pageable pageable;
   private final boolean distinct;
   private final boolean count;
+  private final boolean like;
   private final boolean oneByOne;
 
   @Override
@@ -41,6 +42,7 @@ public class GeneralStatementCreator implements PreparedStatementCreator {
     return builder
         .distinct(distinct)
         .count(count)
+        .like(like)
         .pageable(pageable)
         .oneByOne(oneByOne)
         .withConnection(con)

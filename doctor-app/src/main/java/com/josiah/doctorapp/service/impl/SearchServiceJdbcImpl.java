@@ -65,6 +65,7 @@ public class SearchServiceJdbcImpl implements SearchService<SearchRequestJdbc> {
     List<GeneralRow> rows = jdbcTemplate.query(
         GeneralStatementCreator.builder()
             .request(params)
+            .like(false)
             .pageable(pageHelper.createPageable(params))
             .build(),
         new BeanPropertyRowMapper<>(GeneralRow.class));
@@ -72,6 +73,7 @@ public class SearchServiceJdbcImpl implements SearchService<SearchRequestJdbc> {
         GeneralStatementCreator.builder()
             .request(params)
             .count(true)
+            .like(false)
             .build(),
         new CountRowMapper());
 
@@ -84,6 +86,7 @@ public class SearchServiceJdbcImpl implements SearchService<SearchRequestJdbc> {
     List<GeneralRow> rows = jdbcTemplate.query(
         GeneralStatementCreator.builder()
             .request(params)
+            .like(true)
             .pageable(pageHelper.createPageable(params))
             .distinct(distinct)
             .build(),
