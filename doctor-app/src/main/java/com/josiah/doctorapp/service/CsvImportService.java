@@ -1,16 +1,14 @@
 package com.josiah.doctorapp.service;
 
+import static com.josiah.doctorapp.api.constants.Constants.WHITELIST;
+
+import com.josiah.doctorapp.api.constants.Constants.Column;
 import com.josiah.doctorapp.job.model.LoadDataParam;
 import com.opencsv.CSVParser;
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
-import com.opencsv.exceptions.CsvValidationException;
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -22,6 +20,7 @@ import java.util.stream.Collectors;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -35,7 +34,7 @@ public abstract class CsvImportService {
   private final DataSource dataSource;
   private final CSVParser csvParser;
 
-  protected abstract void addBatch(PreparedStatement statement, String[] data, List<String> headers)
+  protected abstract boolean addBatch(PreparedStatement statement, String[] data, List<String> headers)
       throws SQLException;
   protected abstract boolean shouldTruncate();
 
@@ -46,7 +45,7 @@ public abstract class CsvImportService {
     BufferedReader bufferedReader = new BufferedReader(streamReader);
 
     try (streamReader;bufferedReader;conn) {
-      List<String> headers = getHeaders(bufferedReader.readLine());
+      List<String> headers = filterWhitelisted(getHeaders(bufferedReader.readLine()));
       conn.setAutoCommit(false);
 
       try (PreparedStatement statement = getStatement(conn, headers)) {
@@ -75,12 +74,13 @@ public abstract class CsvImportService {
     // CSV has validation error around line 8.5M.
     // To avoid error short circuit surround read with try in indefinite loop
     CSVParser csvParser = new CSVParser();
-    for(int lines = 1;;lines++) {
+    long lines = 1;
+    for(int i = 1;;i++) {
       try {
         data = csvParser.parseLine(reader.readLine());
         if (data != null) {
 
-          addBatch(statement, data, headers);
+          boolean added = addBatch(statement, data, headers);
 
           if (lines % BATCH_SIZE == 0) {
             log.info("Execute batch: {}", lines);
@@ -88,8 +88,12 @@ public abstract class CsvImportService {
             conn.commit();
           }
 
-          if (param.getNumRows() > 0 && param.getNumRows() == lines) {
+          if (param.getNumRows() > 0 && param.getNumRows() == i) {
             break;
+          }
+
+          if (added) {
+            lines++;
           }
         } else {
           break;
@@ -102,21 +106,30 @@ public abstract class CsvImportService {
   }
 
   private PreparedStatement getStatement(Connection conn, List<String> headers) throws SQLException {
-    String questionMarks = headers.stream()
+    String questionMarks = headers
+        .stream()
         .map(header -> QUESTION_MARK)
         .collect(Collectors.joining(","));
 
-    String statement = INSERT_STATEMENT.replace(COLUMNS, String.join(",", headers))
+    String statement = INSERT_STATEMENT
+        .replace(COLUMNS, StringUtils.join(headers, ","))
         .replace(VALUES, questionMarks);
 
     return conn.prepareStatement(statement);
   }
 
+  private List<String> filterWhitelisted(List<String> headers) {
+    return headers.stream()
+        .filter(header -> WHITELIST.stream()
+            .anyMatch(val -> val.equalsIgnoreCase(header)))
+        .collect(Collectors.toList());
+  }
+
   private List<String> getHeaders(String headers) throws IOException {
     return Arrays.stream(csvParser.parseLine(headers))
         .map(header ->
-            header.equals("Name_of_Third_Party_Entity_Receiving_Payment_or_Transfer_of_Value")
-                ? "name_of_third_party_entity_receiving_payment_or_transfer_of_ccfc"
+            header.equalsIgnoreCase(Column.NAME_OF_ENTITY_RECEIVING_PAYMENT_ACTUAL)
+                ? Column.NAME_OF_ENTITY_RECEIVING_PAYMENT
                 : header)
         .collect(Collectors.toList());
   }

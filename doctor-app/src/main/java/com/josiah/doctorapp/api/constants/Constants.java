@@ -50,6 +50,7 @@ public class Constants {
     public static final String PHYSICIAN_OWNERSHIP_INDICATOR = "physician_ownership_indicator";
     public static final String THIRD_PARTY_PAYMENT_RECIPIENT_IND = "third_party_payment_recipient_indicator";
     public static final String NAME_OF_ENTITY_RECEIVING_PAYMENT = "name_of_third_party_entity_receiving_payment_or_transfer_of_ccfc";
+    public static final String NAME_OF_ENTITY_RECEIVING_PAYMENT_ACTUAL = "name_of_third_party_entity_receiving_payment_or_transfer_of_value";
     public static final String CHARITY_INDICATOR = "charity_indicator";
     public static final String THIRD_PARTY_EQUALS_COVERED_RECIPIENT_IND = "third_party_equals_covered_recipient_indicator";
     public static final String CONTEXTUAL_INFORMATION = "contextual_information";

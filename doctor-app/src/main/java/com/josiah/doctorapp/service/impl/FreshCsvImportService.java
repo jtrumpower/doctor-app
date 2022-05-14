@@ -16,11 +16,13 @@ public class FreshCsvImportService extends CsvImportService {
   }
 
   @Override
-  protected void addBatch(PreparedStatement statement, String[] data, List<String> headers) throws SQLException {
+  protected boolean addBatch(PreparedStatement statement, String[] data, List<String> headers) throws SQLException {
     for (int i = 1; i <= data.length; i++) {
       statement.setObject(i, data[i - 1]);
     }
     statement.addBatch();
+
+    return true;
   }
 
   @Override

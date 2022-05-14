@@ -46,7 +46,7 @@ public class DeltaDataService implements DataService<LoadDataParam> {
   @Override
   public void process(LoadDataParam param) {
     try {
-      downloadHelper.downloadFile();
+      //downloadHelper.downloadFile();
 
       FileInputStream inputStream = fileHelper.getFileInputStream(csvProperties.getLocation());
 

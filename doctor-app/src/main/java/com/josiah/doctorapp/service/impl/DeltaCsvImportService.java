@@ -24,15 +24,36 @@ public class DeltaCsvImportService extends CsvImportService {
   }
 
   @Override
-  protected void addBatch(PreparedStatement statement, String[] data, List<String> headers)
+  protected boolean addBatch(PreparedStatement statement, String[] data, List<String> headers)
       throws SQLException {
     if (!data[0].equals("UNCHANGED")) {
       deleteIfExists(data, headers);
-      for (int i = 1; i <= data.length; i++) {
-        statement.setObject(i, data[i - 1]);
-      }
-      statement.addBatch();
+      add(statement, data);
+
+      return true;
+    } else if(!exists(data, headers)) {
+      add(statement, data);
+
+      return true;
     }
+
+    return false;
+  }
+
+  private boolean exists(String[] data, List<String> headers) {
+    Integer exists = jdbcTemplate.queryForObject(
+        "select exists(select record_id from general_data where record_id = ?)",
+        Integer.class,
+        Long.parseLong(data[findIndex(headers, Column.RECORD_ID)]));
+
+    return exists != null && exists > 0;
+  }
+
+  private void add(PreparedStatement statement, String[] data) throws SQLException {
+    for (int i = 1; i <= data.length; i++) {
+      statement.setObject(i, data[i - 1]);
+    }
+    statement.addBatch();
   }
 
   private void deleteIfExists(String[] data, List<String> headers) {

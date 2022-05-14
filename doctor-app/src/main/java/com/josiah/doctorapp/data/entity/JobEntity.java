@@ -32,7 +32,7 @@ public class JobEntity {
   @Column(name = "status", columnDefinition = "varchar(20)")
   private JobStatus jobStatus;
 
-  @Column(name = "status_desc", columnDefinition = "varchar(255)")
+  @Column(name = "status_desc", columnDefinition = "mediumtext")
   private String statusDesc;
 
   @Column(name = "name", columnDefinition = "varchar(64)")
