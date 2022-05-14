@@ -22,12 +22,10 @@ import java.util.stream.Collectors;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
-public class CsvImportService {
+public abstract class CsvImportService {
   private static final int BATCH_SIZE = 1000;
   private static final String QUESTION_MARK = "?";
   private static final String COLUMNS = "{COLUMNS}";
@@ -36,6 +34,10 @@ public class CsvImportService {
 
   private final DataSource dataSource;
   private final CSVParser csvParser;
+
+  protected abstract void addBatch(PreparedStatement statement, String[] data, List<String> headers)
+      throws SQLException;
+  protected abstract boolean shouldTruncate();
 
   public void stream(InputStream stream, LoadDataParam param) throws SQLException {
     LocalDateTime start = LocalDateTime.now();
@@ -48,9 +50,11 @@ public class CsvImportService {
       conn.setAutoCommit(false);
 
       try (PreparedStatement statement = getStatement(conn, headers)) {
-        statement.execute("truncate general_data");
+        if (shouldTruncate()) {
+          statement.execute("truncate general_data");
+        }
 
-        loadData(statement, conn, bufferedReader, param);
+        loadData(statement, conn, bufferedReader, param, headers);
 
         conn.commit();
         conn.setAutoCommit(true);
@@ -66,7 +70,7 @@ public class CsvImportService {
   }
 
   private void loadData(PreparedStatement statement, Connection conn,
-      BufferedReader reader, LoadDataParam param) throws SQLException {
+      BufferedReader reader, LoadDataParam param, List<String> headers) throws SQLException {
     String[] data;
     // CSV has validation error around line 8.5M.
     // To avoid error short circuit surround read with try in indefinite loop
@@ -76,7 +80,13 @@ public class CsvImportService {
         data = csvParser.parseLine(reader.readLine());
         if (data != null) {
 
-          addBatchAndExecute(statement, conn, data, lines);
+          addBatch(statement, data, headers);
+
+          if (lines % BATCH_SIZE == 0) {
+            log.info("Execute batch: {}", lines);
+            statement.executeBatch();
+            conn.commit();
+          }
 
           if (param.getNumRows() > 0 && param.getNumRows() == lines) {
             break;
@@ -89,21 +99,6 @@ public class CsvImportService {
       }
     }
     statement.executeBatch();
-  }
-
-  private void addBatchAndExecute(PreparedStatement statement, Connection conn,
-      String[] data, long lines)
-      throws SQLException {
-    for (int i = 1; i <= data.length; i++) {
-      statement.setObject(i, data[i - 1]);
-    }
-    statement.addBatch();
-
-    if (lines % BATCH_SIZE == 0) {
-      log.info("Execute batch: {}", lines);
-      statement.executeBatch();
-      conn.commit();
-    }
   }
 
   private PreparedStatement getStatement(Connection conn, List<String> headers) throws SQLException {

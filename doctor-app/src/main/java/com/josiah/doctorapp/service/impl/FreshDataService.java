@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FreshDataService implements DataService<FreshLoadDataParam> {
 
-  private final CsvImportService csvImportService;
+  private final FreshCsvImportService csvImportService;
   private final DownloadHelper downloadHelper;
   private final FileHelper fileHelper;
   private final CsvProperties csvProperties;

@@ -38,7 +38,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DeltaDataService implements DataService<LoadDataParam> {
 
-  private final CsvImportService csvImportService;
+  private final DeltaCsvImportService csvImportService;
   private final DownloadHelper downloadHelper;
   private final FileHelper fileHelper;
   private final CsvProperties csvProperties;

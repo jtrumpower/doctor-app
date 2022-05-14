@@ -4,6 +4,7 @@ import com.josiah.doctorapp.data.entity.JobEntity;
 import com.josiah.doctorapp.data.repository.JobRepository;
 import com.josiah.doctorapp.data.repository.LockRepository;
 import com.josiah.doctorapp.job.model.FreshLoadDataParam;
+import com.josiah.doctorapp.service.impl.DeltaDataService;
 import com.josiah.doctorapp.service.impl.FreshDataService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -12,10 +13,10 @@ import org.springframework.web.server.ResponseStatusException;
 @Component
 public class DeltaLoadJob extends Job<FreshLoadDataParam> {
 
-  private final FreshDataService dataService;
+  private final DeltaDataService dataService;
 
   public DeltaLoadJob(LockRepository lockRepository,
-      JobRepository jobRepository, FreshDataService dataService) {
+      JobRepository jobRepository, DeltaDataService dataService) {
     super(lockRepository, jobRepository);
     this.dataService = dataService;
   }
