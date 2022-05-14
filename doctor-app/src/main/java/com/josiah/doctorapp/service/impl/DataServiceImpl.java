@@ -6,7 +6,7 @@ import com.josiah.doctorapp.helper.DownloadHelper;
 import com.josiah.doctorapp.helper.FileHelper;
 import com.josiah.doctorapp.job.model.LoadDataParam;
 import com.josiah.doctorapp.service.DataService;
-import com.josiah.doctorapp.service.enums.CsvServiceType;
+import com.josiah.doctorapp.service.enums.DataLoadType;
 import com.josiah.doctorapp.service.factory.CsvImportFactory;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class DataServiceImpl implements DataService {
   private final FileHelper fileHelper;
   private final CsvProperties csvProperties;
 
-  public void process(LoadDataParam param, CsvServiceType type) {
+  public void process(LoadDataParam param, DataLoadType type) {
     try {
       if (!fileHelper.getFile(csvProperties.getLocation()).exists() || param.isNewFile()) {
         downloadHelper.downloadFile();

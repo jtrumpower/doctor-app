@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class DataController {
 
-  private final FreshLoadJob job;
+  /*private final FreshLoadJob job;
   private final DeltaLoadJob deltaJob;
   private final DataLoadMapper mapper;
 
@@ -32,5 +32,5 @@ public class DataController {
     deltaJob.run(mapper.mapFromRequest(dataLoadRequest));
 
     return String.format("started data load at: %s", new Date());
-  }
+  }*/
 }

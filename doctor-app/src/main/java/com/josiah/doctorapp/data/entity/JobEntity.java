@@ -1,6 +1,7 @@
 package com.josiah.doctorapp.data.entity;
 
 import com.josiah.doctorapp.job.enums.JobStatus;
+import com.josiah.doctorapp.job.enums.JobType;
 import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,15 +29,19 @@ public class JobEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
+  @Column(name = "name", columnDefinition = "varchar(64)")
+  private String name;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "type", columnDefinition = "varchar(15)")
+  private JobType jobType;
+
   @Enumerated(EnumType.STRING)
   @Column(name = "status", columnDefinition = "varchar(20)")
   private JobStatus jobStatus;
 
   @Column(name = "status_desc", columnDefinition = "mediumtext")
   private String statusDesc;
-
-  @Column(name = "name", columnDefinition = "varchar(64)")
-  private String name;
 
   @Column(name = "description", columnDefinition = "varchar(255)")
   private String description;

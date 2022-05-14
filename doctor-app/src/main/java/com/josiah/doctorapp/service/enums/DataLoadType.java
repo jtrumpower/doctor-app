@@ -1,6 +1,6 @@
 package com.josiah.doctorapp.service.enums;
 
-public enum CsvServiceType {
+public enum DataLoadType {
   DELTA,
   FRESH
 }
