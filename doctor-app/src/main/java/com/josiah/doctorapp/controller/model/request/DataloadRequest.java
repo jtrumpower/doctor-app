@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FreshDataLoadRequest {
+public class DataloadRequest {
   long numRows;
   boolean newFile;
   boolean allRows;
