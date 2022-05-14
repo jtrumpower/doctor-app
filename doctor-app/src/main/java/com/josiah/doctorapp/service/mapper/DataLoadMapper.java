@@ -1,11 +1,11 @@
 package com.josiah.doctorapp.service.mapper;
 
 import com.josiah.doctorapp.controller.model.request.DataloadRequest;
-import com.josiah.doctorapp.job.model.FreshLoadDataParam;
+import com.josiah.doctorapp.job.model.LoadDataParam;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface DataLoadMapper {
 
-  FreshLoadDataParam mapFromRequest(DataloadRequest request);
+  LoadDataParam mapFromRequest(DataloadRequest request);
 }

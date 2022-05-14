@@ -17,10 +17,7 @@ public class FreshCsvImportService extends CsvImportService {
 
   @Override
   protected boolean addBatch(PreparedStatement statement, String[] data, List<String> headers) throws SQLException {
-    for (int i = 1; i <= data.length; i++) {
-      statement.setObject(i, data[i - 1]);
-    }
-    statement.addBatch();
+    addInsertToBatch(statement, data);
 
     return true;
   }

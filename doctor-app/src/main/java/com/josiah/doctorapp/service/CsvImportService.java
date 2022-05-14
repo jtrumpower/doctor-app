@@ -38,7 +38,7 @@ public abstract class CsvImportService {
       throws SQLException;
   protected abstract boolean shouldTruncate();
 
-  public void stream(InputStream stream, LoadDataParam param) throws SQLException {
+  public void importCsv(InputStream stream, LoadDataParam param) throws SQLException {
     LocalDateTime start = LocalDateTime.now();
     Connection conn = dataSource.getConnection();
     InputStreamReader streamReader = new InputStreamReader(stream);
@@ -73,28 +73,21 @@ public abstract class CsvImportService {
     String[] data;
     // CSV has validation error around line 8.5M.
     // To avoid error short circuit surround read with try in indefinite loop
-    CSVParser csvParser = new CSVParser();
-    long lines = 1;
-    for(int i = 1;;i++) {
+    long numInBatch = 0;
+    for(int lines = 1;;lines++) {
       try {
         data = csvParser.parseLine(reader.readLine());
         if (data != null) {
 
-          boolean added = addBatch(statement, data, headers);
-
-          if (lines % BATCH_SIZE == 0) {
-            log.info("Execute batch: {}", lines);
-            statement.executeBatch();
-            conn.commit();
+          if (addBatch(statement, data, headers)) {
+            numInBatch++;
           }
 
-          if (param.getNumRows() > 0 && param.getNumRows() == i) {
+          if (param.getNumRows() > 0 && param.getNumRows() == lines) {
             break;
           }
 
-          if (added) {
-            lines++;
-          }
+          postRowLoaded(conn, statement, numInBatch, lines);
         } else {
           break;
         }
@@ -102,7 +95,26 @@ public abstract class CsvImportService {
         log.error("Failed to execute batch {}", lines, e);
       }
     }
+
+    // clean up stragglers
     statement.executeBatch();
+  }
+
+  private void postRowLoaded(Connection conn, PreparedStatement statement, long numInBatch, long lines) throws SQLException {
+    if (lines % BATCH_SIZE == 0) {
+      log.info("Lines processed: {}", lines);
+    }
+    if (numInBatch > 0 && numInBatch % BATCH_SIZE == 0) {
+      statement.executeBatch();
+      conn.commit();
+    }
+  }
+
+  protected void addInsertToBatch(PreparedStatement statement, String[] data) throws SQLException {
+    for (int i = 1; i <= data.length; i++) {
+      statement.setObject(i, data[i - 1]);
+    }
+    statement.addBatch();
   }
 
   private PreparedStatement getStatement(Connection conn, List<String> headers) throws SQLException {

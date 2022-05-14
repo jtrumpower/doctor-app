@@ -28,11 +28,11 @@ public class DeltaCsvImportService extends CsvImportService {
       throws SQLException {
     if (!data[0].equals("UNCHANGED")) {
       deleteIfExists(data, headers);
-      add(statement, data);
+      addInsertToBatch(statement, data);
 
       return true;
     } else if(!exists(data, headers)) {
-      add(statement, data);
+      addInsertToBatch(statement, data);
 
       return true;
     }
@@ -47,13 +47,6 @@ public class DeltaCsvImportService extends CsvImportService {
         Long.parseLong(data[findIndex(headers, Column.RECORD_ID)]));
 
     return exists != null && exists > 0;
-  }
-
-  private void add(PreparedStatement statement, String[] data) throws SQLException {
-    for (int i = 1; i <= data.length; i++) {
-      statement.setObject(i, data[i - 1]);
-    }
-    statement.addBatch();
   }
 
   private void deleteIfExists(String[] data, List<String> headers) {

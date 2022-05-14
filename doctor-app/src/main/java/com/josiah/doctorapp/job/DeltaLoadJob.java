@@ -3,29 +3,30 @@ package com.josiah.doctorapp.job;
 import com.josiah.doctorapp.data.entity.JobEntity;
 import com.josiah.doctorapp.data.repository.JobRepository;
 import com.josiah.doctorapp.data.repository.LockRepository;
-import com.josiah.doctorapp.job.model.FreshLoadDataParam;
-import com.josiah.doctorapp.service.impl.DeltaDataService;
-import com.josiah.doctorapp.service.impl.FreshDataService;
+import com.josiah.doctorapp.job.model.LoadDataParam;
+import com.josiah.doctorapp.service.DataService;
+import com.josiah.doctorapp.service.impl.DataServiceImpl;
+import com.josiah.doctorapp.service.enums.CsvServiceType;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 @Component
-public class DeltaLoadJob extends Job<FreshLoadDataParam> {
+public class DeltaLoadJob extends Job<LoadDataParam> {
 
-  private final DeltaDataService dataService;
+  private final DataService dataService;
 
   public DeltaLoadJob(LockRepository lockRepository,
-      JobRepository jobRepository, DeltaDataService dataService) {
+      JobRepository jobRepository, DataServiceImpl dataService) {
     super(lockRepository, jobRepository);
     this.dataService = dataService;
   }
 
   @Override
-  public void runJob(FreshLoadDataParam params) {
+  public void runJob(LoadDataParam params) {
 
     try {
-      dataService.process(params);
+      dataService.process(params, CsvServiceType.DELTA);
     } catch (Exception e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
     }
@@ -33,7 +34,7 @@ public class DeltaLoadJob extends Job<FreshLoadDataParam> {
   }
 
   @Override
-  protected JobEntity insertJob(FreshLoadDataParam params) {
+  protected JobEntity insertJob(LoadDataParam params) {
     return jobRepository.save(
         JobEntity.builder()
             .name("Delta data load")

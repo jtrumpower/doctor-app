@@ -1,15 +1,11 @@
 package com.josiah.doctorapp.job.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import lombok.Builder;
+import lombok.Value;
 
-@Data
-@SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
+@Value
+@Builder
 public class LoadDataParam {
   long numRows;
-  boolean allRows;
+  boolean newFile;
 }

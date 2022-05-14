@@ -2,6 +2,7 @@ package com.josiah.doctorapp.controller;
 
 import com.josiah.doctorapp.controller.model.request.SearchRequestJdbc;
 import com.josiah.doctorapp.service.DownloadService;
+import com.josiah.doctorapp.service.impl.DownloadServiceImpl;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
