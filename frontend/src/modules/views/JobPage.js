@@ -87,7 +87,7 @@ const JobPage = () => {
             <Button type="submit" variant="outlined">Run Job</Button>
           </Stack>
         </form>
-        <JobTable {...{jobs}} />
+        <JobTable {...{jobs, refreshJobs}} />
       </Stack>
   )
 }

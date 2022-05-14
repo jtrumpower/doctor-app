@@ -1,10 +1,16 @@
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import React from "react";
 
-const JobTable = ({ jobs }) => {
+const JobTable = ({ jobs, refreshJobs }) => {
+
+  React.useEffect(() => {
+    const interval = setInterval(refreshJobs, 5000);
+
+    return () => clearInterval(interval);
+  }, [])
 
   return (
-      <Table>
+      <Table sx={{ border: '1px gray solid', borderRadius: '4px' }}>
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>
