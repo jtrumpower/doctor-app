@@ -3,6 +3,7 @@ package com.josiah.doctorapp.service.impl;
 import com.josiah.doctorapp.controller.model.request.DataloadRequest;
 import com.josiah.doctorapp.data.entity.JobEntity;
 import com.josiah.doctorapp.data.repository.JobRepository;
+import com.josiah.doctorapp.data.repository.LockRepository;
 import com.josiah.doctorapp.job.DeltaLoadJob;
 import com.josiah.doctorapp.job.FreshLoadJob;
 import com.josiah.doctorapp.job.model.LoadDataParam;
@@ -13,12 +14,14 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
 public class JobServiceImpl implements JobService {
 
+  private final LockRepository lockRepository;
   private final JobRepository jobRepository;
   private final DeltaLoadJob deltaLoadJob;
   private final FreshLoadJob freshLoadJob;
@@ -41,7 +44,10 @@ public class JobServiceImpl implements JobService {
   }
 
   @Override
+  @Transactional
   public void delete(long id) {
+    lockRepository.findByJob_id(id)
+        .ifPresent(lockRepository::delete);
     jobRepository.delete(
         jobRepository.findById(id)
             .orElseThrow(() ->

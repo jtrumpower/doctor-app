@@ -40,7 +40,7 @@ public class DeltaLoadJob extends Job<LoadDataParam> {
         JobEntity.builder()
             .name("Delta data load")
             .description(String.format("Perform delta on data: %s", params.toString()))
-            .jobType(JobType.DATA_LOAD)
+            .type(JobType.DATA_LOAD)
             .build());
   }
 

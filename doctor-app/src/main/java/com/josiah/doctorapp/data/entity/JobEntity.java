@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -34,11 +35,12 @@ public class JobEntity {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "type", columnDefinition = "varchar(15)")
-  private JobType jobType;
+  private JobType type;
 
+  @Default
   @Enumerated(EnumType.STRING)
-  @Column(name = "status", columnDefinition = "varchar(20)")
-  private JobStatus jobStatus;
+  @Column(name = "status", columnDefinition = "varchar(20) default 'IN_PROGRESS'")
+  private JobStatus status = JobStatus.IN_PROGRESS;
 
   @Column(name = "status_desc", columnDefinition = "mediumtext")
   private String statusDesc;

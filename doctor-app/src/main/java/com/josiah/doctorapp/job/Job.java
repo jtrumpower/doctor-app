@@ -49,7 +49,7 @@ public abstract class Job<T> {
   }
 
   private void updateJob(JobEntity job, JobStatus status, String message, LocalDateTime start) {
-    job.setJobStatus(status);
+    job.setStatus(status);
     job.setStatusDesc(message);
     job.setCompleted(new Timestamp(Calendar.getInstance().getTimeInMillis()));
     job.setTook(ChronoUnit.SECONDS.between(start,  LocalDateTime.now()));

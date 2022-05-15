@@ -40,7 +40,7 @@ public class FreshLoadJob extends Job<LoadDataParam> {
         JobEntity.builder()
             .name("Fresh data load")
             .description(String.format("Load fresh data: %s", params.toString()))
-            .jobType(JobType.DATA_LOAD)
+            .type(JobType.DATA_LOAD)
             .build());
   }
 
