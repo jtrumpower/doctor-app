@@ -26,7 +26,7 @@ const AppDataGrid = ({ results, page, pageSize, rowCount, loading, onSortChange,
   }, [rowCount, setRowCountState]);
 
   return (
-      <Box height={700} marginTop={3}>
+      <Box height={700} marginTop={2}>
         <DataGrid
             loading={loading}
             rowCount={rowCountState}

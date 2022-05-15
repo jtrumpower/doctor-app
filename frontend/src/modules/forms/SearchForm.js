@@ -9,7 +9,16 @@ import {
 import React from 'react';
 import {SEARCH_TYPES} from './model/SearchModels';
 import AppTypeahead from "../components/AppTypeahead";
+import styled from "@emotion/styled";
 
+const StyledExportButton = styled(Button)({
+  width: 80,
+  backgroundColor: "green",
+  color: "white",
+  '&:hover': {
+    backgroundColor: "darkgreen"
+  }
+})
 
 const SearchForm = ({ search, onSubmit, handleChange}) => {
 
@@ -43,7 +52,7 @@ const SearchForm = ({ search, onSubmit, handleChange}) => {
             </FormControl>
             <Button type="submit" variant="outlined" sx={{ width: 80 }}>Search</Button>
           </Stack>
-          <Button variant="outlined" sx={{ width: 80 }} onClick={download}>Export</Button>
+          <StyledExportButton variant="outlined" onClick={download}>Export</StyledExportButton>
         </Stack>
 
       </form>

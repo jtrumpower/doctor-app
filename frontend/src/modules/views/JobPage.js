@@ -84,7 +84,7 @@ const JobPage = () => {
                     onChange={handleChange} />
               </FormGroup>
             </StyledBox>
-            <Button type="submit" variant="outlined">Run Job</Button>
+            <Button type="submit" variant="contained">Run Job</Button>
           </Stack>
         </form>
         <JobTable {...{jobs, refreshJobs}} />
