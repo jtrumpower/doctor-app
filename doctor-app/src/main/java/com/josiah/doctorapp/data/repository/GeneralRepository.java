@@ -22,7 +22,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GeneralRepository extends PagingAndSortingRepository<GeneralEntity, Integer> {
+public interface GeneralRepository extends PagingAndSortingRepository<GeneralEntity, Long> {
 
   @Query("select e from GeneralEntity e")
   @QueryHints(value = {

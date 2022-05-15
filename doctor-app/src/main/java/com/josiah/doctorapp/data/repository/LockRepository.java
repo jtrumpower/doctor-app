@@ -9,9 +9,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LockRepository extends JpaRepository<LockEntity, Integer> {
+public interface LockRepository extends JpaRepository<LockEntity, Long> {
 
   Optional<LockEntity> findByTable(TableEnum Table);
+  Optional<LockEntity> findByJob_id(long id);
 
   @Query("select l from LockEntity l order by l.created desc")
   List<LockEntity> getAllLocksOrderByCreatedDesc();

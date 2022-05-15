@@ -83,7 +83,7 @@ public abstract class CsvImportService {
             numInBatch++;
           }
 
-          if (param.getNumRows() > 0 && param.getNumRows() == lines) {
+          if (!param.isAllRows() && param.getNumRows() > 0 && param.getNumRows() == lines) {
             break;
           }
 

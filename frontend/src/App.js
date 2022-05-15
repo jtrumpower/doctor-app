@@ -7,10 +7,11 @@ import {Container} from '@mui/material';
 import {Route, Routes} from "react-router-dom";
 import JobPage from "./modules/views/JobPage";
 import LockPage from "./modules/views/LockPage";
+import {SnackbarProvider} from "notistack";
 
 function App() {
   return (
-      <React.Fragment>
+      <SnackbarProvider maxSnack={3}>
         <AppAppBar />
         <Container maxWidth="lg">
           <Routes>
@@ -19,7 +20,7 @@ function App() {
             <Route path="/locks" exact element={<LockPage />} />
           </Routes>
         </Container>
-      </React.Fragment>
+      </SnackbarProvider>
   );
 }
 

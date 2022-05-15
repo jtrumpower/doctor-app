@@ -3,7 +3,7 @@ const url = "http://localhost:8080/api"
 
 export const FetchWrapper = (path, options) => {
 
-  return fetch(`${url}${path}`,options).then(async response => {
+  return fetch(`${url}${path}`,options).then(response => {
     if (response.status > 299) {
       return Promise.reject("An error occurred");
     } else if (response.status === 204) {

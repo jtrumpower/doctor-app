@@ -14,6 +14,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 public abstract class Job<T> {
@@ -36,7 +37,7 @@ public abstract class Job<T> {
       updateJob(job, JobStatus.FAILED, e.getMessage(), start);
       throw e;
     } finally {
-      unlockTable(TableEnum.GENERAL_DATA);
+      unlockTable(job.getId());
     }
   }
 
@@ -59,9 +60,9 @@ public abstract class Job<T> {
             .build());
   }
 
-  protected void unlockTable(TableEnum table) {
-    lockRepository.delete(
-        lockRepository.findByTable(table)
-            .orElseThrow(() -> new RuntimeException(String.format("No to delete for table: %s", table.name()))));
+  protected void unlockTable(long jobId) {
+    lockRepository.findByJob_id(jobId)
+        .ifPresent(lockRepository::delete);
+
   }
 }

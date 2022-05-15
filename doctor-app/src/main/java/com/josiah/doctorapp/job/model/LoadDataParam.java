@@ -7,5 +7,6 @@ import lombok.Value;
 @Builder
 public class LoadDataParam {
   long numRows;
+  boolean allRows;
   boolean newFile;
 }

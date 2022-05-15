@@ -24,7 +24,7 @@ public class LockServiceImpl implements LockService {
   @Override
   public void deleteLock(long id) {
     lockRepository.delete(
-        lockRepository.findById((int) id)
+        lockRepository.findById(id)
             .orElseThrow(() ->
                 new ResponseStatusException(
                     HttpStatus.NOT_FOUND,

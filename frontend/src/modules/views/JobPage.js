@@ -8,8 +8,10 @@ import {
   Typography
 } from "@mui/material";
 import styled from "@emotion/styled";
-import JobTable from "../components/JobTable";
+import GenericTable from "../components/GenericTable";
 import {JobApi} from "../api/JobApi";
+import {JobTableModel} from "../components/model/JobTableModel";
+import {useSnackbar} from "notistack";
 
 const StyledBox = styled(Box)(({theme}) => ({
   marginTop: theme.spacing(1),
@@ -22,6 +24,7 @@ const StyledBox = styled(Box)(({theme}) => ({
 const JobPage = () => {
   const [params, setParams] = useState({ type: 'DELTA', allRows: false, newFile: false, numRows: 1000 });
   const [jobs, setJobs] = useState([]);
+  const {enqueueSnackbar} = useSnackbar();
 
   const handleChange = (e) => {
     const newVal = { ...params }
@@ -39,18 +42,18 @@ const JobPage = () => {
     JobApi.getAllJobs().then(json => {
       setJobs(json)
     }).catch(error => {
-      console.log(error);
-    })
+      enqueueSnackbar(error, {variant: 'error'})
+    });
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     JobApi.postJob(params).then(json => {
-      refreshJobs();
+      enqueueSnackbar("Submitted Job", {variant: 'success'});
     }).catch(error => {
-      console.log(error);
-    })
+      enqueueSnackbar(error, {variant: 'error'});
+    });
   }
 
   React.useEffect(() => {
@@ -87,7 +90,11 @@ const JobPage = () => {
             <Button type="submit" variant="contained">Run Job</Button>
           </Stack>
         </form>
-        <JobTable {...{jobs, refreshJobs}} />
+        <GenericTable
+            title={JobTableModel.title}
+            rows={jobs.map(job => JobTableModel.row(job))}
+            header={JobTableModel.header()}
+            onInterval={refreshJobs} />
       </Stack>
   )
 }
