@@ -12,13 +12,13 @@ export const LockTableModel = {
         <TableCell>Delete</TableCell>
       </TableRow>
   ),
-  row: (lock, handleDelete) => (
+  row: (lock, onDelete) => (
       <TableRow key={lock.id}>
         <TableCell>{lock.table}</TableCell>
         <TableCell>{lock.job.id}</TableCell>
         <TableCell>{lock.created}</TableCell>
         <TableCell>
-          <IconButton onClick={() => handleDelete(lock)}>
+          <IconButton onClick={() => onDelete(lock)}>
             <HighlightOffIcon />
           </IconButton>
         </TableCell>

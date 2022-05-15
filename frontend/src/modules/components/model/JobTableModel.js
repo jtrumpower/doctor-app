@@ -1,5 +1,6 @@
-import {TableCell, TableRow} from "@mui/material";
+import {IconButton, TableCell, TableRow} from "@mui/material";
 import React from "react";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 export const JobTableModel = {
   title: 'Job History',
@@ -13,18 +14,24 @@ export const JobTableModel = {
         <TableCell>Completed On</TableCell>
         <TableCell>Took</TableCell>
         <TableCell>Status Description</TableCell>
+        <TableCell>Delete</TableCell>
       </TableRow>
   ),
-  row: (row) => (
-      <TableRow key={row.id}>
-        <TableCell>{row.name}</TableCell>
-        <TableCell>{row.description}</TableCell>
-        <TableCell>{row.type}</TableCell>
-        <TableCell>{row.status}</TableCell>
-        <TableCell>{row.created}</TableCell>
-        <TableCell>{row.completed}</TableCell>
-        <TableCell width={100}>{row.took} sec</TableCell>
-        <TableCell>{row.statusDesc}</TableCell>
+  row: (job, onDelete) => (
+      <TableRow key={job.id}>
+        <TableCell>{job.name}</TableCell>
+        <TableCell>{job.description}</TableCell>
+        <TableCell>{job.type}</TableCell>
+        <TableCell>{job.status}</TableCell>
+        <TableCell>{job.created}</TableCell>
+        <TableCell>{job.completed}</TableCell>
+        <TableCell width={100}>{job.took} sec</TableCell>
+        <TableCell>{job.statusDesc}</TableCell>
+        <TableCell>
+          <IconButton onClick={() => onDelete(job)}>
+            <HighlightOffIcon />
+          </IconButton>
+        </TableCell>
       </TableRow>
   )
 }

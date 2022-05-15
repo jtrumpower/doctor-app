@@ -12,9 +12,13 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ForkJoinPool;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @RequiredArgsConstructor
 public abstract class Job<T> {
@@ -24,21 +28,24 @@ public abstract class Job<T> {
   protected abstract void runJob(T params);
   protected abstract JobEntity insertJob(T params);
 
-  @Async
+  @Transactional
   public void run(T params) {
     LocalDateTime start = LocalDateTime.now();
     JobEntity job = insertJob(params);
     lockTable(TableEnum.GENERAL_DATA, job);
 
-    try {
-      runJob(params);
-      updateJob(job, JobStatus.SUCCESS, "Successfully complete job", start);
-    } catch (Exception e) {
-      updateJob(job, JobStatus.FAILED, e.getMessage(), start);
-      throw e;
-    } finally {
-      unlockTable(job.getId());
-    }
+    ForkJoinPool.commonPool()
+        .execute(() -> {
+          try {
+            runJob(params);
+            updateJob(job, JobStatus.SUCCESS, "Successfully complete job", start);
+          } catch (Exception e) {
+            updateJob(job, JobStatus.FAILED, e.getMessage(), start);
+            throw e;
+          } finally {
+            unlockTable(job.getId());
+          }
+        });
   }
 
   private void updateJob(JobEntity job, JobStatus status, String message, LocalDateTime start) {
@@ -51,7 +58,8 @@ public abstract class Job<T> {
 
   protected void lockTable(TableEnum table, JobEntity job) {
     if (lockRepository.findByTable(table).isPresent()) {
-      throw new RuntimeException(String.format("Lock already exists on table: %s", table));
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST, String.format("Lock already exists on table: %s", table));
     }
     lockRepository.save(
         LockEntity.builder()

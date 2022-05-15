@@ -7,4 +7,5 @@ import java.util.List;
 public interface JobService {
   List<JobEntity> getJobs();
   void runJob(DataloadRequest job);
+  void delete(long id);
 }

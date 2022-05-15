@@ -38,18 +38,28 @@ const JobPage = () => {
     setParams(newVal);
   }
 
+  const handleDelete = (job) => {
+    JobApi.deleteJob(job.id).then(() => {
+      refreshJobs();
+      enqueueSnackbar("Deleted Job", {variant: 'success'});
+    }).catch(error => {
+      enqueueSnackbar(error, {variant: 'error'});
+    });
+  }
+
   const refreshJobs = () => {
     JobApi.getAllJobs().then(json => {
-      setJobs(json)
+      setJobs(json);
     }).catch(error => {
-      enqueueSnackbar(error, {variant: 'error'})
-    });
+      console.log(error);
+    })
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     JobApi.postJob(params).then(json => {
+      refreshJobs();
       enqueueSnackbar("Submitted Job", {variant: 'success'});
     }).catch(error => {
       enqueueSnackbar(error, {variant: 'error'});
@@ -92,7 +102,7 @@ const JobPage = () => {
         </form>
         <GenericTable
             title={JobTableModel.title}
-            rows={jobs.map(job => JobTableModel.row(job))}
+            rows={jobs.map(job => JobTableModel.row(job, handleDelete))}
             header={JobTableModel.header()}
             onInterval={refreshJobs} />
       </Stack>

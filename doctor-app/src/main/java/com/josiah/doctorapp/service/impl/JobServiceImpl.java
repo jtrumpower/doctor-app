@@ -11,7 +11,9 @@ import com.josiah.doctorapp.service.enums.DataLoadType;
 import com.josiah.doctorapp.service.mapper.DataLoadMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -36,5 +38,13 @@ public class JobServiceImpl implements JobService {
     } else {
       freshLoadJob.run(loadData);
     }
+  }
+
+  @Override
+  public void delete(long id) {
+    jobRepository.delete(
+        jobRepository.findById(id)
+            .orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No job found by id: %s", id))));
   }
 }

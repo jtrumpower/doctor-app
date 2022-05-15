@@ -13,7 +13,7 @@ const LockPage = () => {
     refreshData();
   }, [])
 
-  const onDelete = (lock) => {
+  const handleDelete = (lock) => {
     LockApi.deleteLock(lock.id).then(() => {
       refreshData();
       enqueueSnackbar("Deleted Lock", {variant: 'success'});
@@ -35,7 +35,7 @@ const LockPage = () => {
         <GenericTable
             title={LockTableModel.title}
             header={LockTableModel.header()}
-            rows={locks.map(lock => LockTableModel.row(lock, onDelete))}
+            rows={locks.map(lock => LockTableModel.row(lock, handleDelete))}
             onInterval={refreshData}
         />
       </Stack>

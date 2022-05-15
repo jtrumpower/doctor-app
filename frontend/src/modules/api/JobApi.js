@@ -12,5 +12,10 @@ export const JobApi = ({
       },
       body: JSON.stringify(params)
     })
+  },
+  deleteJob: (id) => {
+    return FetchWrapper(`/jobs/${id}`, {
+      method: 'DELETE'
+    })
   }
 })

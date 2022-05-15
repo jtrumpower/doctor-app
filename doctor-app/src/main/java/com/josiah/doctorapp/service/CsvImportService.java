@@ -74,7 +74,7 @@ public abstract class CsvImportService {
     // CSV has validation error around line 8.5M.
     // To avoid error short circuit surround read with try in indefinite loop
     long numInBatch = 0;
-    for(int lines = 1;;lines++) {
+    for(int lines = 1;;++lines) {
       try {
         data = csvParser.parseLine(reader.readLine());
         if (data != null) {
@@ -83,11 +83,11 @@ public abstract class CsvImportService {
             numInBatch++;
           }
 
+          postRowLoaded(conn, statement, numInBatch, lines);
+
           if (!param.isAllRows() && param.getNumRows() > 0 && param.getNumRows() == lines) {
             break;
           }
-
-          postRowLoaded(conn, statement, numInBatch, lines);
         } else {
           break;
         }
