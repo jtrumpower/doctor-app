@@ -25,12 +25,6 @@ public class DownloadHelper {
   private final CmsProperties cmsProperties;
   private final CsvProperties csvProperties;
 
-  public InputStream streamFile(String fileUrl) throws IOException {
-    URL url = new URL(fileUrl);
-    URLConnection conn = url.openConnection();
-    return conn.getInputStream();
-  }
-
   public String getDownloadUrl(MetastoreResponse metastore) {
     return Optional.ofNullable(metastore)
         .map(MetastoreResponse::getDistribution)
@@ -47,7 +41,7 @@ public class DownloadHelper {
             .id(cmsProperties.getMetastoreId())
             .build());
 
-    InputStream stream = streamFile(getDownloadUrl(metaResponse));
+    InputStream stream = new URL(getDownloadUrl(metaResponse)).openStream();
     fileHelper.delete(csvProperties.getLocation());
     fileHelper.writeFile(stream, csvProperties.getLocation());
   }

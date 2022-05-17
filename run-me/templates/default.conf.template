@@ -9,6 +9,14 @@ server {
     proxy_pass http://host.docker.internal:8080/;
   }
 
+  location ~ ^/(manifest.json|favicon.ico|logo192.png|logo512.png)  {
+    proxy_pass http://host.docker.internal:8080;
+  }
+
+  location /static {
+    proxy_pass http://host.docker.internal:8080/static;
+  }
+
   location /api {
     proxy_pass http://host.docker.internal:8080/api;
   }
