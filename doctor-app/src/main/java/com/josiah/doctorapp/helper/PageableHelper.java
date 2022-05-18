@@ -20,8 +20,10 @@ public class PageableHelper {
   private final SortMapper sortMapper;
 
   public Pageable createPageable(SearchRequestJdbc searchRequest) {
-    List<Sorting> sortList = searchRequest.getSorting().stream().filter(sort -> WHITELIST.contains(sort.getField())).collect(
-        Collectors.toList());
+    List<Sorting> sortList = searchRequest.getSorting()
+        .stream()
+        .filter(sort -> WHITELIST.contains(sort.getField()))
+        .collect(Collectors.toList());
 
    return PageRequest.of(searchRequest.getPage(), searchRequest.getPageSize(),
         Sort.by(sortMapper.mapSortingToSort(sortList)));
