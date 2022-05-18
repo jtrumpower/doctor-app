@@ -7,6 +7,8 @@ services:
       MYSQL_USER: 'user'
       MYSQL_PASSWORD: 'password'
       MYSQL_ROOT_PASSWORD: 'password'
+    expose:
+      - 3306
     ports:
       - '3306:3306'
     volumes:
@@ -20,5 +22,11 @@ services:
     environment:
       - NGINX_HOST=localhost
       - NGINX_PORT=80
+  app:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
 volumes:
   dbdata:
