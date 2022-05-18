@@ -16,7 +16,7 @@ public class FreshCsvImportService extends CsvImportService {
   }
 
   @Override
-  protected boolean addBatch(PreparedStatement statement, String[] data, List<String> headers) throws SQLException {
+  protected boolean addBatch(PreparedStatement statement, List<String> data, List<String> headers) throws SQLException {
     addInsertToBatch(statement, data);
 
     return true;

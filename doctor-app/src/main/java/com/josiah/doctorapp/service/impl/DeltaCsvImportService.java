@@ -24,9 +24,9 @@ public class DeltaCsvImportService extends CsvImportService {
   }
 
   @Override
-  protected boolean addBatch(PreparedStatement statement, String[] data, List<String> headers)
+  protected boolean addBatch(PreparedStatement statement, List<String> data, List<String> headers)
       throws SQLException {
-    if (!data[0].equals("UNCHANGED")) {
+    if (!data.get(findIndex(headers, Column.CHANGE_TYPE)).equals("UNCHANGED")) {
       deleteIfExists(data, headers);
       addInsertToBatch(statement, data);
 
@@ -40,20 +40,20 @@ public class DeltaCsvImportService extends CsvImportService {
     return false;
   }
 
-  private boolean exists(String[] data, List<String> headers) {
+  private boolean exists(List<String> data, List<String> headers) {
     Integer exists = jdbcTemplate.queryForObject(
         "select exists(select record_id from general_data where record_id = ?)",
         Integer.class,
-        Long.parseLong(data[findIndex(headers, Column.RECORD_ID)]));
+        Long.parseLong(data.get(findIndex(headers, Column.RECORD_ID))));
 
     return exists != null && exists > 0;
   }
 
-  private void deleteIfExists(String[] data, List<String> headers) {
+  private void deleteIfExists(List<String> data, List<String> headers) {
     try {
-      jdbcTemplate.execute("delete from general_data where record_id = " + Long.parseLong(data[findIndex(headers, Column.RECORD_ID)]));
+      jdbcTemplate.execute("delete from general_data where record_id = " + Long.parseLong(data.get(findIndex(headers, Column.RECORD_ID))));
     } catch (NumberFormatException | IndexOutOfBoundsException e) {
-      log.error(String.format("Couldn't delete record %s", Arrays.toString(data)));
+      log.error(String.format("Couldn't delete record %s", data));
     }
   }
 

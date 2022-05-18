@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +35,7 @@ public abstract class CsvImportService {
   private final DataSource dataSource;
   private final CSVParser csvParser;
 
-  protected abstract boolean addBatch(PreparedStatement statement, String[] data, List<String> headers)
+  protected abstract boolean addBatch(PreparedStatement statement, List<String> data, List<String> headers)
       throws SQLException;
   protected abstract boolean shouldTruncate();
 
@@ -45,7 +46,8 @@ public abstract class CsvImportService {
     BufferedReader bufferedReader = new BufferedReader(streamReader);
 
     try (streamReader;bufferedReader;conn) {
-      List<String> headers = filterWhitelisted(getHeaders(bufferedReader.readLine()));
+      List<String> headers = getHeaders(bufferedReader.readLine());
+      List<Integer> removeIndexes = filterWhitelisted(headers);
       conn.setAutoCommit(false);
 
       try (PreparedStatement statement = getStatement(conn, headers)) {
@@ -53,7 +55,7 @@ public abstract class CsvImportService {
           statement.execute("truncate general_data");
         }
 
-        loadData(statement, conn, bufferedReader, param, headers);
+        loadData(statement, conn, bufferedReader, param, headers, removeIndexes);
 
         conn.commit();
         conn.setAutoCommit(true);
@@ -69,7 +71,7 @@ public abstract class CsvImportService {
   }
 
   private void loadData(PreparedStatement statement, Connection conn,
-      BufferedReader reader, LoadDataParam param, List<String> headers) throws SQLException {
+      BufferedReader reader, LoadDataParam param, List<String> headers, List<Integer> removeIndexes) throws SQLException {
     String[] data;
     // CSV has validation error around line 8.5M.
     // To avoid error short circuit surround read with try in indefinite loop
@@ -78,8 +80,9 @@ public abstract class CsvImportService {
       try {
         data = csvParser.parseLine(reader.readLine());
         if (data != null) {
+          List<String> dataList = filterDataWhitelisted(new ArrayList<>(List.of(data)), removeIndexes);
 
-          if (addBatch(statement, data, headers)) {
+          if (addBatch(statement, dataList, headers)) {
             numInBatch++;
           }
 
@@ -110,9 +113,9 @@ public abstract class CsvImportService {
     }
   }
 
-  protected void addInsertToBatch(PreparedStatement statement, String[] data) throws SQLException {
-    for (int i = 1; i <= data.length; i++) {
-      statement.setObject(i, data[i - 1]);
+  protected void addInsertToBatch(PreparedStatement statement, List<String> data) throws SQLException {
+    for (int i = 1; i <= data.size(); i++) {
+      statement.setObject(i, data.get(i - 1));
     }
     statement.addBatch();
   }
@@ -130,13 +133,6 @@ public abstract class CsvImportService {
     return conn.prepareStatement(statement);
   }
 
-  private List<String> filterWhitelisted(List<String> headers) {
-    return headers.stream()
-        .filter(header -> WHITELIST.stream()
-            .anyMatch(val -> val.equalsIgnoreCase(header)))
-        .collect(Collectors.toList());
-  }
-
   private List<String> getHeaders(String headers) throws IOException {
     return Arrays.stream(csvParser.parseLine(headers))
         .map(header ->
@@ -144,5 +140,23 @@ public abstract class CsvImportService {
                 ? Column.NAME_OF_ENTITY_RECEIVING_PAYMENT
                 : header)
         .collect(Collectors.toList());
+  }
+
+  private List<Integer> filterWhitelisted(List<String> headers) {
+    List<Integer> removedIndexes = new ArrayList<>();
+    for (int i = 0; i < headers.size(); i++) {
+      if (!WHITELIST.contains(headers.get(i).toLowerCase())) {
+        removedIndexes.add(i);
+        headers.remove(i--);
+      }
+    }
+
+    return removedIndexes;
+  }
+
+  private List<String> filterDataWhitelisted(List<String> data, List<Integer> removeIndexes) {
+    removeIndexes.forEach((i) -> data.remove(i.intValue()));
+
+    return data;
   }
 }
