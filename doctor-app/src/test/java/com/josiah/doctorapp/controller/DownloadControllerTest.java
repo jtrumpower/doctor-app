@@ -21,7 +21,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
-import org.springframework.mock.web.MockHttpServletResponse;
 
 @ExtendWith(MockitoExtension.class)
 class DownloadControllerTest {
