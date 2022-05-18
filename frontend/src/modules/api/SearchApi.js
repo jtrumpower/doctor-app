@@ -2,7 +2,7 @@ import {FetchWrapper} from "./FetchWrapper";
 
 
 export const search = (params, paged) => {
-  const suffix = paged ? "paged" : "typeahead"
+  const suffix = paged ? "" : "typeahead"
 
   return FetchWrapper(`/search/${suffix}`,{
     method: 'POST',

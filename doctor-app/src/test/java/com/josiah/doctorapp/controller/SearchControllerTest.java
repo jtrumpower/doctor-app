@@ -30,6 +30,25 @@ class SearchControllerTest {
   @Test
   @SneakyThrows
   @Sql("classpath:search-data.sql")
+  void shouldReturnAllSearchResults() {
+    ObjectMapper objectMapper = new ObjectMapper();
+    SearchRequestJdbc search = SearchRequestJdbc.builder()
+        .value("")
+        .columns(Column.PHYSICIAN_FIRST_NAME)
+        .build();
+
+    mockMvc.perform(post("/api/search")
+            .content(objectMapper.writeValueAsBytes(search))
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.results", hasSize(6)))
+        .andExpect(jsonPath("$.totalResults", is(6)))
+        .andExpect(jsonPath("$.totalPages", is(1)));
+  }
+
+  @Test
+  @SneakyThrows
+  @Sql("classpath:search-data.sql")
   void shouldReturnSearchResults() {
     ObjectMapper objectMapper = new ObjectMapper();
     SearchRequestJdbc search = SearchRequestJdbc.builder()
@@ -37,12 +56,52 @@ class SearchControllerTest {
         .columns(Column.PHYSICIAN_FIRST_NAME)
         .build();
 
-    mockMvc.perform(post("/api/search/paged")
+    mockMvc.perform(post("/api/search")
             .content(objectMapper.writeValueAsBytes(search))
             .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.results", hasSize(1)))
+        .andExpect(jsonPath("$.totalResults", is(1)))
+        .andExpect(jsonPath("$.totalPages", is(1)))
         .andExpect(jsonPath("$.results[0].physician_first_name", is(SEARCH_NAME)));
+  }
+
+  @Test
+  @SneakyThrows
+  @Sql("classpath:search-data.sql")
+  void shouldReturnSearchResultsPaged() {
+    ObjectMapper objectMapper = new ObjectMapper();
+    SearchRequestJdbc search = SearchRequestJdbc.builder()
+        .columns(Column.PHYSICIAN_FIRST_NAME)
+        .pageSize(2)
+        .build();
+
+    mockMvc.perform(post("/api/search")
+            .content(objectMapper.writeValueAsBytes(search))
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.results", hasSize(2)))
+        .andExpect(jsonPath("$.totalResults", is(6)))
+        .andExpect(jsonPath("$.totalPages", is(3)));
+  }
+
+  @Test
+  @SneakyThrows
+  @Sql("classpath:search-data.sql")
+  void shouldReturnTypeaheadResults() {
+    ObjectMapper objectMapper = new ObjectMapper();
+    SearchRequestJdbc search = SearchRequestJdbc.builder()
+        .value("matt")
+        .columns(Column.PHYSICIAN_FIRST_NAME)
+        .build();
+
+    mockMvc.perform(post("/api/search/typeahead")
+            .content(objectMapper.writeValueAsBytes(search))
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.results", hasSize(3)))
+        .andExpect(jsonPath("$.results[0].physician_first_name", is("matt")))
+        .andExpect(jsonPath("$.results[1].physician_first_name", is("matthew")))
+        .andExpect(jsonPath("$.results[2].physician_first_name", is("matthias")));
   }
 }

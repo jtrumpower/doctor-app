@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SearchController {
   private final SearchServiceJdbcImpl searchService;
 
-  @PostMapping("/search/paged")
+  @PostMapping("/search")
   public PagedSearchResponse searchPaged(@RequestBody SearchRequestJdbc searchRequest) {
     return searchService.pagedSearch(searchRequest);
   }
