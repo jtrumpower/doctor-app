@@ -24,6 +24,8 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 class SearchControllerTest {
   private static final String SEARCH_NAME = "matthew";
 
+  private final ObjectMapper objectMapper = new ObjectMapper();
+
   @Autowired
   private MockMvc mockMvc;
 
@@ -31,7 +33,6 @@ class SearchControllerTest {
   @SneakyThrows
   @Sql("classpath:search-data.sql")
   void shouldReturnAllSearchResults() {
-    ObjectMapper objectMapper = new ObjectMapper();
     SearchRequestJdbc search = SearchRequestJdbc.builder()
         .value("")
         .columns(Column.PHYSICIAN_FIRST_NAME)
@@ -50,7 +51,6 @@ class SearchControllerTest {
   @SneakyThrows
   @Sql("classpath:search-data.sql")
   void shouldReturnSearchResults() {
-    ObjectMapper objectMapper = new ObjectMapper();
     SearchRequestJdbc search = SearchRequestJdbc.builder()
         .value(SEARCH_NAME)
         .columns(Column.PHYSICIAN_FIRST_NAME)
@@ -70,7 +70,6 @@ class SearchControllerTest {
   @SneakyThrows
   @Sql("classpath:search-data.sql")
   void shouldReturnSearchResultsPaged() {
-    ObjectMapper objectMapper = new ObjectMapper();
     SearchRequestJdbc search = SearchRequestJdbc.builder()
         .columns(Column.PHYSICIAN_FIRST_NAME)
         .pageSize(2)
@@ -89,7 +88,6 @@ class SearchControllerTest {
   @SneakyThrows
   @Sql("classpath:search-data.sql")
   void shouldReturnTypeaheadResults() {
-    ObjectMapper objectMapper = new ObjectMapper();
     SearchRequestJdbc search = SearchRequestJdbc.builder()
         .value("matt")
         .columns(Column.PHYSICIAN_FIRST_NAME)
