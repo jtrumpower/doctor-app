@@ -30,5 +30,9 @@ services:
       - db
     ports:
       - "8080:8080"
+    volumes:
+      - appdata:/var/lib/app
+    restart: on-failure
 volumes:
+  appdata:
   dbdata:
