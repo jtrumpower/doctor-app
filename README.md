@@ -10,7 +10,7 @@ There are two ways to run the app. Using docker is the easiest:
 
 ### Run via Java installed on your machine
 2. Install java 11 (ideally, add java to your $PATH so it's easier to run)
-3. Run MySql and NGINX from docker-compose file in the "run-me" folder
+3. Run "db" and "web" services from docker-compose file in the "run-me" folder
    1. verify you don't have port 80 or 3306 used already
    2. if you don't run the services manually make sure you comment out the app service that runs java
 4. Run `java -jar doctor-app.jar` in the "run-me" folder
